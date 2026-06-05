@@ -27,9 +27,6 @@ jobs:
     name: 🔒 Security
     if: ${{ github.event_name == 'pull_request' || github.event_name == 'merge_group' }}
     uses: ./.github/workflows/validate/security.yml
-    permissions:
-      contents: read
-      pull-requests: write
 
   detect-changes:
     name: 🔍 Detect Changes
