@@ -26,7 +26,7 @@ jobs:
   validate-security:
     name: 🔒 Security
     if: ${{ github.event_name == 'pull_request' || github.event_name == 'merge_group' }}
-    uses: ./.github/workflows/validate/security.yml
+    uses: ./.github/workflows/validate-security.yml
 
   detect-changes:
     name: 🔍 Detect Changes
@@ -61,7 +61,7 @@ jobs:
               - 'build.sh'
               - 'setup.sh'
               - 'start.sh'
-              - '.github/workflows/validate/backend.yml'
+              - '.github/workflows/validate-backend.yml'
               - '.github/workflows/pr-builder.yml'
             frontend:
               - 'frontend/**'
@@ -69,28 +69,28 @@ jobs:
               - 'pnpm-lock.yaml'
               - 'pnpm-workspace.yaml'
               - 'nx.json'
-              - '.github/workflows/validate/frontend.yml'
+              - '.github/workflows/validate-frontend.yml'
               - '.github/workflows/pr-builder.yml'
             docs:
               - 'docs/**'
               - 'package.json'
               - 'pnpm-lock.yaml'
               - 'pnpm-workspace.yaml'
-              - '.github/workflows/validate/docs.yml'
+              - '.github/workflows/validate-docs.yml'
               - '.github/workflows/pr-builder.yml'
             sdks:
               - 'sdks/**'
               - 'package.json'
               - 'pnpm-lock.yaml'
               - 'pnpm-workspace.yaml'
-              - '.github/workflows/validate/sdks.yml'
+              - '.github/workflows/validate-sdks.yml'
               - '.github/workflows/pr-builder.yml'
             tools:
               - 'tools/**'
               - 'package.json'
               - 'pnpm-lock.yaml'
               - 'pnpm-workspace.yaml'
-              - '.github/workflows/validate/tools.yml'
+              - '.github/workflows/validate-tools.yml'
               - '.github/workflows/pr-builder.yml'
             e2e:
               - 'tests/e2e/**'
@@ -98,52 +98,52 @@ jobs:
               - 'package.json'
               - 'pnpm-lock.yaml'
               - 'pnpm-workspace.yaml'
-              - '.github/workflows/validate/e2e.yml'
+              - '.github/workflows/validate-e2e.yml'
               - '.github/workflows/pr-builder.yml'
             powershell:
               - '**.ps1'
-              - '.github/workflows/validate/windows-powershell.yml'
+              - '.github/workflows/validate-windows-powershell.yml'
               - '.github/workflows/pr-builder.yml'
 
   validate-backend:
     name: ⚙️ Backend
     needs: detect-changes
     if: ${{ needs.detect-changes.outputs.backend == 'true' }}
-    uses: ./.github/workflows/validate/backend.yml
+    uses: ./.github/workflows/validate-backend.yml
 
   validate-frontend:
     name: 🎨 Frontend
     needs: detect-changes
     if: ${{ needs.detect-changes.outputs.frontend == 'true' }}
-    uses: ./.github/workflows/validate/frontend.yml
+    uses: ./.github/workflows/validate-frontend.yml
 
   validate-docs:
     name: 📚 Documentation
     needs: detect-changes
     if: ${{ needs.detect-changes.outputs.docs == 'true' }}
-    uses: ./.github/workflows/validate/docs.yml
+    uses: ./.github/workflows/validate-docs.yml
 
   validate-sdks:
     name: 📦 SDKs
     needs: detect-changes
     if: ${{ needs.detect-changes.outputs.sdks == 'true' }}
-    uses: ./.github/workflows/validate/sdks.yml
+    uses: ./.github/workflows/validate-sdks.yml
 
   validate-tools:
     name: 🔧 Tools
     needs: detect-changes
     if: ${{ needs.detect-changes.outputs.tools == 'true' }}
-    uses: ./.github/workflows/validate/tools.yml
+    uses: ./.github/workflows/validate-tools.yml
 
   validate-e2e:
     name: 🎭 E2E
     needs: detect-changes
     if: ${{ needs.detect-changes.outputs.backend == 'true' || needs.detect-changes.outputs.frontend == 'true' || needs.detect-changes.outputs.e2e == 'true' }}
-    uses: ./.github/workflows/validate/e2e.yml
+    uses: ./.github/workflows/validate-e2e.yml
     secrets: inherit
 
   validate-windows:
     name: 🪟 Windows PowerShell
     needs: detect-changes
     if: ${{ needs.detect-changes.outputs.powershell == 'true' }}
-    uses: ./.github/workflows/validate/windows-powershell.yml
+    uses: ./.github/workflows/validate-windows-powershell.yml
