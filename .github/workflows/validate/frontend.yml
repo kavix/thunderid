@@ -14,55 +14,6 @@ env:
   NODE_VERSION: "lts/*"
 
 jobs:
-  security-audit:
-    name: 🔒 Security Audit
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-    steps:
-      - name: 📥 Checkout Code
-        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
-
-      - name: ⚙️ Set up Node.js and pnpm
-        uses: ./.github/actions/setup-pnpm
-        with:
-          node-version: ${{ env.NODE_VERSION }}
-
-      - name: 🔍 Run pnpm audit (Frontend)
-        working-directory: frontend
-        run: |
-          echo "🔍 Running pnpm audit for frontend dependencies..."
-          pnpm audit --ignore-registry-errors --audit-level=high
-
-      - name: 🔍 Run npm audit (Sample Apps)
-        run: |
-          echo "🔍 Running npm audit for sample app dependencies..."
-          IGNORED_GHSAS=$(jq '[(.common + ."sample-apps")[].id]' "$GITHUB_WORKSPACE/.audit-ignore.json")
-          for app in samples/apps/*/; do
-            if [ -f "${app}package-lock.json" ]; then
-              echo "Auditing $app..."
-              cd "$app"
-              AUDIT_RESULT=$(npm audit --json --audit-level=high 2>&1) || true
-              REMAINING=$(echo "$AUDIT_RESULT" | jq --argjson ignored "$IGNORED_GHSAS" '
-                [.vulnerabilities[].via[] | select(type == "object")
-                 | select(.severity == "high" or .severity == "critical")
-                 | select(.url | test($ignored | join("|")) | not)
-                ] | length
-              ')
-              if [ "$REMAINING" -gt 0 ]; then
-                echo "❌ Found $REMAINING unignored high/critical advisories in $app:"
-                echo "$AUDIT_RESULT" | jq --argjson ignored "$IGNORED_GHSAS" '
-                  [.vulnerabilities[].via[] | select(type == "object")
-                   | select(.severity == "high" or .severity == "critical")
-                   | select(.url | test($ignored | join("|")) | not)
-                  ] | unique_by(.url) | .[] | "\(.severity): \(.name) - \(.url)"
-                '
-                exit 1
-              fi
-              echo "✅ $app - All high/critical advisories are in the ignored list."
-              cd - > /dev/null
-            fi
-          done
-
   lint:
     name: 🧹 Lint Frontend
     runs-on: ubuntu-latest

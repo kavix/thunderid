@@ -31,3 +31,9 @@ jobs:
 
       - name: 🔨 Build SDKs
         run: make build_sdks
+
+      - name: 🧹 Lint SDKs
+        run: make lint_sdks
+
+      - name: 🧪 Test SDKs
+        run: make test_sdks

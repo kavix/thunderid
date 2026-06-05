@@ -330,7 +330,7 @@ jobs:
   validate-windows:
     name: 🪟 Validate Windows PowerShell
     needs: build
-    uses: ./.github/workflows/windows-powershell-validation.yml
+    uses: ./.github/workflows/validate/windows-powershell.yml
 
   build-and-package:
     name: 📦 Build and Package Release

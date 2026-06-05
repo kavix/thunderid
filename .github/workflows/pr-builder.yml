@@ -23,6 +23,14 @@ env:
   NODE_VERSION: "lts/*"
 
 jobs:
+  validate-security:
+    name: 🔒 Security
+    if: ${{ github.event_name == 'pull_request' || github.event_name == 'merge_group' }}
+    uses: ./.github/workflows/validate/security.yml
+    permissions:
+      contents: read
+      pull-requests: write
+
   detect-changes:
     name: 🔍 Detect Changes
     runs-on: ubuntu-latest
@@ -60,7 +68,6 @@ jobs:
               - '.github/workflows/pr-builder.yml'
             frontend:
               - 'frontend/**'
-              - 'samples/**'
               - 'package.json'
               - 'pnpm-lock.yaml'
               - 'pnpm-workspace.yaml'
@@ -90,6 +97,7 @@ jobs:
               - '.github/workflows/pr-builder.yml'
             e2e:
               - 'tests/e2e/**'
+              - 'samples/**'
               - 'package.json'
               - 'pnpm-lock.yaml'
               - 'pnpm-workspace.yaml'
@@ -97,29 +105,8 @@ jobs:
               - '.github/workflows/pr-builder.yml'
             powershell:
               - '**.ps1'
-              - '.github/workflows/windows-powershell-validation.yml'
+              - '.github/workflows/validate/windows-powershell.yml'
               - '.github/workflows/pr-builder.yml'
-
-  dependency-review:
-    name: 🔎 Dependency Review
-    if: ${{ github.event_name == 'pull_request' || github.event_name == 'merge_group' }}
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-    permissions:
-      contents: read
-      pull-requests: write
-    steps:
-      - name: 📥 Checkout Code
-        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
-
-      - name: 🔎 Dependency Review
-        uses: actions/dependency-review-action@2031cfc080254a8a887f58cffee85186f0e49e48 # v4
-        with:
-          fail-on-severity: high
-          deny-licenses: GPL-3.0-only,GPL-3.0-or-later,AGPL-3.0-only,AGPL-3.0-or-later
-          comment-summary-in-pr: always
-          base-ref: ${{ github.event_name == 'merge_group' && github.event.merge_group.base_sha || github.event.pull_request.base.sha }}
-          head-ref: ${{ github.event_name == 'merge_group' && github.sha || github.event.pull_request.head.sha }}
 
   validate-backend:
     name: ⚙️ Backend
@@ -162,4 +149,4 @@ jobs:
     name: 🪟 Windows PowerShell
     needs: detect-changes
     if: ${{ needs.detect-changes.outputs.powershell == 'true' }}
-    uses: ./.github/workflows/windows-powershell-validation.yml
+    uses: ./.github/workflows/validate/windows-powershell.yml
