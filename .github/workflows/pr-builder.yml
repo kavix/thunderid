@@ -27,6 +27,9 @@ jobs:
     name: 🔒 Security
     if: ${{ github.event_name == 'pull_request' || github.event_name == 'merge_group' }}
     uses: ./.github/workflows/validate-security.yml
+    permissions:
+      contents: read
+      pull-requests: write
 
   detect-changes:
     name: 🔍 Detect Changes
@@ -110,12 +113,18 @@ jobs:
     needs: detect-changes
     if: ${{ needs.detect-changes.outputs.backend == 'true' }}
     uses: ./.github/workflows/validate-backend.yml
+    permissions:
+      contents: read
+      id-token: write
 
   validate-frontend:
     name: 🎨 Frontend
     needs: detect-changes
     if: ${{ needs.detect-changes.outputs.frontend == 'true' }}
     uses: ./.github/workflows/validate-frontend.yml
+    permissions:
+      contents: read
+      id-token: write
 
   validate-docs:
     name: 📚 Documentation
