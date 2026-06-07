@@ -5,7 +5,6 @@ on:
 
 permissions:
   contents: read
-  pull-requests: write
 
 env:
   NODE_VERSION: "lts/*"
@@ -66,7 +65,6 @@ jobs:
     timeout-minutes: 5
     permissions:
       contents: read
-      pull-requests: write
     steps:
       - name: 📥 Checkout Code
         uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
@@ -76,6 +74,6 @@ jobs:
         with:
           fail-on-severity: high
           deny-licenses: GPL-3.0-only,GPL-3.0-or-later,AGPL-3.0-only,AGPL-3.0-or-later
-          comment-summary-in-pr: always
+          comment-summary-in-pr: never
           base-ref: ${{ github.event.pull_request.base.sha || github.event.merge_group.base_sha }}
           head-ref: ${{ github.event.pull_request.head.sha || github.sha }}
