@@ -385,7 +385,7 @@ func (suite *RoleExporterTestSuite) TestValidateRoleWrapper_MissingOUID() {
 	err := validateRoleWrapper(role, nil, nil, nil)
 
 	assert.Error(suite.T(), err)
-	assert.Contains(suite.T(), err.Error(), "ou_id or ou_handle is required for role 'Admin'")
+	assert.Contains(suite.T(), err.Error(), "ouId or ouHandle is required for role 'Admin'")
 }
 
 // Test validateRoleWrapper - invalid assignment type

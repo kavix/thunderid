@@ -386,7 +386,7 @@ func (suite *LoadDeclarativeResourcesTestSuite) TestLoadDeclarativeResourcesVali
 	}
 	err = validateRoleWrapper(roleNoOU, fileStore, nil, nil)
 	suite.Error(err)
-	suite.Contains(err.Error(), "ou_id or ou_handle is required for role 'Test Role'")
+	suite.Contains(err.Error(), "ouId or ouHandle is required for role 'Test Role'")
 }
 
 // TestLoadDeclarativeResourcesValidateAssignmentTypes tests validation of assignment types.

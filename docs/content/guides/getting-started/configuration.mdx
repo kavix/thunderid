@@ -289,7 +289,7 @@ cache:
     username: ""
     password: ""
     db: 0
-    key_prefix: "thunderid"
+    key_prefix: "{{productSlug}}"
     max_retries: 5
     min_retry_backoff_ms: 10
     max_retry_backoff_ms: 100
@@ -513,7 +513,7 @@ declarativeResources:
       # Format 3 — per-item mountPath override (absolute path)
       - key: org-default
         path: organization_units/default.yaml
-        mountPath: /opt/thunderid/repository/resources/organization_units/default.yaml
+        mountPath: /opt/{{productSlug}}/repository/resources/organization_units/default.yaml
 ```
 
 :::note
@@ -608,7 +608,7 @@ observability:
       enabled: true
       exporter_type: otlp
       otlp_endpoint: "localhost:4317"
-      service_name: "thunderid-iam"
+      service_name: "{{productSlug}}-iam"
       service_version: "1.0.0"
       environment: "production"
       sample_rate: 1.0

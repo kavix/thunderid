@@ -256,7 +256,7 @@ func validateRoleWrapper(
 		}
 	}
 	if role.OUID == "" {
-		return fmt.Errorf("ou_id or ou_handle is required for role '%s'", role.Name)
+		return fmt.Errorf("ouId or ouHandle is required for role '%s'", role.Name)
 	}
 
 	for _, assignment := range role.Assignments {
