@@ -328,9 +328,9 @@ func (suite *LoadDeclarativeResourcesTestSuite) TestLoadDeclarativeResourcesPars
 id: parser-test-role
 name: Parser Test Role
 description: Testing YAML parser
-ou_id: ou-default
+ouId: ou-default
 permissions:
-  - resource_server_id: api-server
+  - resourceServerId: api-server
     permissions:
       - read
       - write

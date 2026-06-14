@@ -277,9 +277,9 @@ func (suite *RoleExporterTestSuite) TestParseToRole_ValidYAML() {
 id: role1
 name: Admin
 description: Admin role
-ou_id: ou1
+ouId: ou1
 permissions:
-  - resource_server_id: rs1
+  - resourceServerId: rs1
     permissions:
       - read
       - write
@@ -317,7 +317,7 @@ func (suite *RoleExporterTestSuite) TestParseToRole_OptionalFieldsOmitted() {
 	yamlData := []byte(`
 id: role1
 name: Admin
-ou_id: ou1
+ouId: ou1
 `)
 
 	role, err := parseToRole(yamlData)
@@ -459,7 +459,7 @@ func (suite *RoleExporterTestSuite) TestParseToRoleWrapper() {
 	yamlData := []byte(`
 id: role1
 name: Admin
-ou_id: ou1
+ouId: ou1
 `)
 
 	result, err := parseToRoleWrapper(yamlData)

@@ -190,8 +190,8 @@ type roleDeclarativeResource struct {
 	ID          string                      `yaml:"id"`
 	Name        string                      `yaml:"name"`
 	Description string                      `yaml:"description,omitempty"`
-	OUID        string                      `yaml:"ou_id,omitempty"`
-	OUHandle    string                      `yaml:"ou_handle,omitempty"`
+	OUID        string                      `yaml:"ouId,omitempty"`
+	OUHandle    string                      `yaml:"ouHandle,omitempty"`
 	Permissions []roleDeclarativePermission `yaml:"permissions"`
 	Assignments []RoleAssignment            `yaml:"assignments,omitempty"`
 }

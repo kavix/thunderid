@@ -262,8 +262,8 @@ func makeUserValidator() func(e *entity.Entity, svc entity.EntityServiceInterfac
 type userDeclarativeResource struct {
 	ID          string                 `yaml:"id"`
 	Type        string                 `yaml:"type"`
-	OUID        string                 `yaml:"ou_id,omitempty"`
-	OUHandle    string                 `yaml:"ou_handle,omitempty"`
+	OUID        string                 `yaml:"ouId,omitempty"`
+	OUHandle    string                 `yaml:"ouHandle,omitempty"`
 	Attributes  map[string]interface{} `yaml:"attributes"`
 	Credentials map[string]interface{} `yaml:"credentials,omitempty"` // Flexible format for YAML
 }
