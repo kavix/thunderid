@@ -230,7 +230,7 @@ func makeUserValidator() func(e *entity.Entity, svc entity.EntityServiceInterfac
 			return fmt.Errorf("user type is required")
 		}
 		if e.OUID == "" {
-			return fmt.Errorf("ou_id or ou_handle is required for user '%s'", e.ID)
+			return fmt.Errorf("ouId or ouHandle is required for user '%s'", e.ID)
 		}
 		if len(e.Attributes) == 0 {
 			return fmt.Errorf("user attributes are required")
