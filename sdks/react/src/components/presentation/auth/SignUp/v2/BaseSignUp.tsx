@@ -285,6 +285,7 @@ const BaseSignUpContent: FC<BaseSignUpProps> = ({
   const [isFlowInitialized, setIsFlowInitialized] = useState(false);
   const [currentFlow, setCurrentFlow] = useState<EmbeddedSignUpFlowResponseV2 | null>(null);
   const [apiError, setApiError] = useState<Error | null>(null);
+  const [isStorageReady, setIsStorageReady] = useState(false);
   const [passkeyState, setPasskeyState] = useState<PasskeyState>({
     actionId: null,
     creationOptions: null,
@@ -312,6 +313,8 @@ const BaseSignUpContent: FC<BaseSignUpProps> = ({
         }
       } catch {
         // StorageManager unavailable — continue without persisted token
+      } finally {
+        setIsStorageReady(true);
       }
     })();
   }, [isSdkInitialized]);
@@ -441,7 +444,9 @@ const BaseSignUpContent: FC<BaseSignUpProps> = ({
     [t],
   );
 
-  const formFields: any = (currentFlow?.data as any)?.components ? extractFormFields((currentFlow!.data as any).components) : [];
+  const formFields: any = (currentFlow?.data as any)?.components
+    ? extractFormFields((currentFlow!.data as any).components)
+    : [];
 
   const form: any = useForm<Record<string, string>>({
     fields: formFields,
@@ -483,6 +488,40 @@ const BaseSignUpContent: FC<BaseSignUpProps> = ({
     },
     [extractFormFields, resetForm, setFormValue],
   );
+
+  /**
+   * Determine whether a completed flow finished on a display-only screen.
+   * Such a completion must be rendered, not redirected past.
+   */
+  const isDisplayOnlyCompletion = (response: EmbeddedSignUpFlowResponseV2): boolean => {
+    const data: any = response?.data;
+    const components: unknown[] | undefined = data?.components ?? data?.meta?.components;
+
+    return (
+      response?.flowStatus === EmbeddedSignUpFlowStatusV2.Complete &&
+      Array.isArray(components) &&
+      components.length > 0 &&
+      !(response as {assertion?: string})?.assertion &&
+      !data?.redirectURL &&
+      !(response as any)?.redirectUrl
+    );
+  };
+
+  /**
+   * Handle a completed flow. A flow can complete on a display-only screen; in
+   * that case render the screen and skip onComplete so the wrapper does not
+   * immediately redirect away from it. Otherwise hand off to onComplete.
+   */
+  const handleFlowCompletion = (response: EmbeddedSignUpFlowResponseV2): void => {
+    if (isDisplayOnlyCompletion(response)) {
+      const normalized: any = normalizeFlowResponseLocal(response);
+      setCurrentFlow(normalized);
+      setupFormFields(normalized);
+      return;
+    }
+
+    onComplete?.(response);
+  };
 
   /**
    * Handle input value changes.
@@ -576,7 +615,7 @@ const BaseSignUpContent: FC<BaseSignUpProps> = ({
               handleError(continueResponse);
               onError?.(continueResponse);
             } else if (continueResponse.flowStatus === EmbeddedSignUpFlowStatusV2.Complete) {
-              onComplete?.(continueResponse);
+              handleFlowCompletion(continueResponse as EmbeddedSignUpFlowResponseV2);
             } else if (continueResponse.flowStatus === EmbeddedSignUpFlowStatusV2.Incomplete) {
               const normalizedContinueResponse: any = normalizeFlowResponseLocal(continueResponse);
               setCurrentFlow(normalizedContinueResponse);
@@ -655,7 +694,7 @@ const BaseSignUpContent: FC<BaseSignUpProps> = ({
                     handleError(continueResponse);
                     onError?.(continueResponse);
                   } else if (continueResponse.flowStatus === EmbeddedSignUpFlowStatusV2.Complete) {
-                    onComplete?.(continueResponse);
+                    handleFlowCompletion(continueResponse as EmbeddedSignUpFlowResponseV2);
                   } else if (continueResponse.flowStatus === EmbeddedSignUpFlowStatusV2.Incomplete) {
                     const normalizedContinueResponse: any = normalizeFlowResponseLocal(continueResponse);
                     setCurrentFlow(normalizedContinueResponse);
@@ -745,7 +784,7 @@ const BaseSignUpContent: FC<BaseSignUpProps> = ({
       }
 
       if (response.flowStatus === EmbeddedSignUpFlowStatusV2.Complete) {
-        onComplete?.(response);
+        handleFlowCompletion(response as EmbeddedSignUpFlowResponseV2);
         return;
       }
 
@@ -826,7 +865,7 @@ const BaseSignUpContent: FC<BaseSignUpProps> = ({
       onFlowChange?.(processedResponse);
 
       if (processedResponse.flowStatus === EmbeddedSignUpFlowStatusV2.Complete) {
-        onComplete?.(processedResponse);
+        handleFlowCompletion(processedResponse as EmbeddedSignUpFlowResponseV2);
       } else {
         setCurrentFlow(processedResponse);
         setupFormFields(processedResponse);
@@ -936,7 +975,7 @@ const BaseSignUpContent: FC<BaseSignUpProps> = ({
       return;
     }
 
-    if (isInitialized && !isFlowInitialized && !initializationAttemptedRef.current) {
+    if (isInitialized && isStorageReady && !isFlowInitialized && !initializationAttemptedRef.current) {
       initializationAttemptedRef.current = true;
 
       (async (): Promise<void> => {
@@ -945,13 +984,22 @@ const BaseSignUpContent: FC<BaseSignUpProps> = ({
         clearMessages();
 
         try {
-          const rawResponse: any = await onInitialize?.();
+          const payload: any = challengeTokenRef.current ? {challengeToken: challengeTokenRef.current} : undefined;
+          const rawResponse: any = await onInitialize?.(payload);
           const response: any = normalizeFlowResponseLocal(rawResponse);
 
           await setChallengeToken(response.challengeToken ?? null);
           setCurrentFlow(response);
           setIsFlowInitialized(true);
           onFlowChange?.(response);
+
+          // Clean up executionId and applicationId from URL after storing in state
+          if (window?.location?.href) {
+            const url: URL = new URL(window.location.href);
+            url.searchParams.delete('executionId');
+            url.searchParams.delete('applicationId');
+            window.history.replaceState({}, '', url.toString());
+          }
 
           if (response.flowStatus === EmbeddedSignUpFlowStatusV2.Error) {
             handleError(response);
@@ -960,7 +1008,7 @@ const BaseSignUpContent: FC<BaseSignUpProps> = ({
           }
 
           if (response.flowStatus === EmbeddedSignUpFlowStatusV2.Complete) {
-            onComplete?.(response);
+            handleFlowCompletion(response as EmbeddedSignUpFlowResponseV2);
             return;
           }
 
@@ -983,6 +1031,7 @@ const BaseSignUpContent: FC<BaseSignUpProps> = ({
     }
   }, [
     isInitialized,
+    isStorageReady,
     isFlowInitialized,
     onInitialize,
     onComplete,

@@ -150,7 +150,7 @@ func (suite *DeclarativeResourceTestSuite) TestParseToUser_HashesCredentials() {
 	yamlData := []byte("" +
 		"id: user-1\n" +
 		"type: person\n" +
-		"ou_id: ou-1\n" +
+		"ouId: ou-1\n" +
 		"attributes:\n" +
 		"  username: alice\n" +
 		"  email: alice@example.com\n" +
@@ -169,7 +169,7 @@ func (suite *DeclarativeResourceTestSuite) TestParseToUserWrapper() {
 	yamlData := []byte("" +
 		"id: user-1\n" +
 		"type: person\n" +
-		"ou_id: ou-1\n" +
+		"ouId: ou-1\n" +
 		"attributes:\n" +
 		"  username: alice\n" +
 		"  email: alice@example.com\n")
@@ -227,7 +227,7 @@ func (suite *DeclarativeResourceTestSuite) TestMakeUserParser_ParsesYAMLToEntity
 	userYAML := []byte("" +
 		"id: user-1\n" +
 		"type: person\n" +
-		"ou_id: ou-1\n" +
+		"ouId: ou-1\n" +
 		"attributes:\n" +
 		"  username: alice\n" +
 		"  email: alice@example.com\n" +
@@ -273,7 +273,7 @@ func (suite *DeclarativeResourceTestSuite) TestValidateResource_MissingUsername(
 		Attributes: map[string]interface{}{},
 	}
 
-	_, err := exporter.ValidateResource(resource, "user-1", log.GetLogger())
+	_, err := exporter.ValidateResource(context.Background(), resource, "user-1", log.GetLogger())
 	suite.NotNil(err)
 }
 

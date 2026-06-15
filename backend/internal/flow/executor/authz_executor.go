@@ -71,14 +71,14 @@ func newAuthorizationExecutor(
 // calling the authorization service, and storing authorized permissions in runtime data.
 func (a *authorizationExecutor) Execute(ctx *core.NodeContext) (*common.ExecutorResponse, error) {
 	logger := a.logger.With(log.String(log.LoggerKeyExecutionID, ctx.ExecutionID))
-	logger.DebugWithContext(ctx.Context, "Executing authorization executor")
+	logger.Debug(ctx.Context, "Executing authorization executor")
 
 	execResp := &common.ExecutorResponse{
 		RuntimeData: make(map[string]string),
 	}
 
 	if !ctx.AuthenticatedUser.IsAuthenticated && ctx.FlowType == common.FlowTypeRegistration {
-		logger.DebugWithContext(ctx.Context,
+		logger.Debug(ctx.Context,
 			"Sending executor complete response for unauthenticated user in registration flow")
 		execResp.Status = common.ExecComplete
 		return execResp, nil
@@ -94,12 +94,12 @@ func (a *authorizationExecutor) Execute(ctx *core.NodeContext) (*common.Executor
 	requestedPerms := extractRequestedPermissions(ctx)
 
 	if len(requestedPerms) == 0 {
-		logger.DebugWithContext(ctx.Context, "No permissions to check, returning empty permissions")
+		logger.Debug(ctx.Context, "No permissions to check, returning empty permissions")
 		execResp.Status = common.ExecComplete
 		return execResp, nil
 	}
 
-	logger.DebugWithContext(ctx.Context, "Determined required permissions", log.Int("count", len(requestedPerms)))
+	logger.Debug(ctx.Context, "Determined required permissions", log.Int("count", len(requestedPerms)))
 
 	// Extract user ID and group IDs
 	userID := ctx.AuthenticatedUser.UserID
@@ -108,30 +108,25 @@ func (a *authorizationExecutor) Execute(ctx *core.NodeContext) (*common.Executor
 		return nil, errors.Join(errors.New("Failed to extract group IDs"), err)
 	}
 
-	logger.DebugWithContext(ctx.Context, "Calling authorization service",
+	logger.Debug(ctx.Context, "Calling authorization service",
 		log.MaskedString(log.LoggerKeyUserID, userID),
 		log.Int("groupCount", len(groupIDs)),
 		log.Int("permissionCount", len(requestedPerms)))
 
-	// Call authorization service
-	authzReq := authzsvc.GetAuthorizedPermissionsRequest{
-		EntityID:             userID,
-		GroupIDs:             groupIDs,
-		RequestedPermissions: requestedPerms,
-	}
-
-	authzResp, svcErr := a.authzService.GetAuthorizedPermissions(ctx.Context, authzReq)
+	authzResp, svcErr := a.authzService.EvaluateAccessBatch(ctx.Context,
+		a.buildAccessEvaluationsRequest(userID, groupIDs, requestedPerms))
 	if svcErr != nil {
-		logger.ErrorWithContext(ctx.Context, "Authorization service call failed",
+		logger.Error(ctx.Context, "Authorization service call failed",
 			log.String("error", svcErr.Error.DefaultValue))
 		execResp.Status = common.ExecFailure
 		execResp.Error = &ErrAuthorizationFailed
 		return execResp, nil
 	}
 
-	setAuthorizedPermissions(execResp, authzResp.AuthorizedPermissions)
-	logger.DebugWithContext(ctx.Context, "Authorization completed successfully",
-		log.Int("authorizedCount", len(authzResp.AuthorizedPermissions)))
+	authorizedPermissions := a.filterAuthorizedPermissions(requestedPerms, authzResp.Evaluations)
+	setAuthorizedPermissions(execResp, authorizedPermissions)
+	logger.Debug(ctx.Context, "Authorization completed successfully",
+		log.Int("authorizedCount", len(authorizedPermissions)))
 
 	execResp.Status = common.ExecComplete
 	return execResp, nil
@@ -150,6 +145,39 @@ func extractRequestedPermissions(ctx *core.NodeContext) []string {
 // setAuthorizedPermissions sets the authorized permissions in the executor response's runtime data.
 func setAuthorizedPermissions(execResp *common.ExecutorResponse, authorizedPermissions []string) {
 	execResp.RuntimeData[authorizedPermissionsKey] = utils.StringifyStringArray(authorizedPermissions, " ")
+}
+
+// buildAccessEvaluationsRequest builds the authorization service request for the requested permissions.
+func (a *authorizationExecutor) buildAccessEvaluationsRequest(
+	entityID string,
+	groupIDs []string,
+	requestedPermissions []string,
+) authzsvc.AccessEvaluationsRequest {
+	evaluations := make([]authzsvc.AccessEvaluationRequest, 0, len(requestedPermissions))
+	for _, permission := range requestedPermissions {
+		evaluations = append(evaluations, authzsvc.AccessEvaluationRequest{
+			Subject: authzsvc.Subject{
+				ID:       entityID,
+				GroupIDs: groupIDs,
+			},
+			Permission: authzsvc.Permission{Name: permission},
+		})
+	}
+	return authzsvc.AccessEvaluationsRequest{Evaluations: evaluations}
+}
+
+// filterAuthorizedPermissions returns the requested permissions that were allowed by the authorization service.
+func (a *authorizationExecutor) filterAuthorizedPermissions(
+	requestedPermissions []string,
+	evaluations []authzsvc.AccessEvaluationResponse,
+) []string {
+	authorizedPermissions := make([]string, 0, len(evaluations))
+	for i, evaluation := range evaluations {
+		if evaluation.Decision && i < len(requestedPermissions) {
+			authorizedPermissions = append(authorizedPermissions, requestedPermissions[i])
+		}
+	}
+	return authorizedPermissions
 }
 
 // extractGroupIDs extracts group IDs from the authenticated user's attributes or runtime data.
@@ -185,7 +213,7 @@ func (a *authorizationExecutor) extractGroupIDs(ctx *core.NodeContext) ([]string
 
 	// If no groups found in context, fetch transitive groups from entity provider
 	if a.entityProvider != nil && ctx.AuthenticatedUser.UserID != "" {
-		a.logger.DebugWithContext(ctx.Context,
+		a.logger.Debug(ctx.Context,
 			"Groups not found in context, fetching transitive groups from entity provider",
 			log.MaskedString(log.LoggerKeyUserID, ctx.AuthenticatedUser.UserID))
 

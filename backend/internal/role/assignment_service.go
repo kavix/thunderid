@@ -43,6 +43,8 @@ type RoleAssignmentServiceInterface interface {
 		includeDisplay bool, assigneeType string) (*AssignmentList, *serviceerror.ServiceError)
 	AddAssignments(ctx context.Context, id string, assignments []RoleAssignment) *serviceerror.ServiceError
 	RemoveAssignments(ctx context.Context, id string, assignments []RoleAssignment) *serviceerror.ServiceError
+	AddAssigneesToRoles(ctx context.Context, assignments []RoleAssignment,
+		roleIDs []string) *serviceerror.ServiceError
 }
 
 // roleAssignmentService is the default implementation of RoleAssignmentServiceInterface.
@@ -92,11 +94,11 @@ func (as *roleAssignmentService) GetRoleAssignmentsByType(ctx context.Context, i
 
 	exists, err := as.roleStore.IsRoleExist(ctx, id)
 	if err != nil {
-		logger.ErrorWithContext(ctx, "Failed to check role existence", log.String("id", id), log.Error(err))
+		logger.Error(ctx, "Failed to check role existence", log.String("id", id), log.Error(err))
 		return nil, &serviceerror.InternalServerError
 	}
 	if !exists {
-		logger.DebugWithContext(ctx, "Role not found", log.String("id", id))
+		logger.Debug(ctx, "Role not found", log.String("id", id))
 		return nil, &ErrorRoleNotFound
 	}
 
@@ -119,7 +121,7 @@ func (as *roleAssignmentService) GetRoleAssignmentsByType(ctx context.Context, i
 		if errors.Is(err, errResultLimitExceededInCompositeMode) {
 			return nil, &ResultLimitExceededInCompositeMode
 		}
-		logger.ErrorWithContext(ctx, "Failed to get role assignments count", log.String("id", id), log.Error(err))
+		logger.Error(ctx, "Failed to get role assignments count", log.String("id", id), log.Error(err))
 		return nil, &serviceerror.InternalServerError
 	}
 
@@ -132,7 +134,7 @@ func (as *roleAssignmentService) GetRoleAssignmentsByType(ctx context.Context, i
 		if errors.Is(err, errResultLimitExceededInCompositeMode) {
 			return nil, &ResultLimitExceededInCompositeMode
 		}
-		logger.ErrorWithContext(ctx, "Failed to get role assignments", log.String("id", id), log.Error(err))
+		logger.Error(ctx, "Failed to get role assignments", log.String("id", id), log.Error(err))
 		return nil, &serviceerror.InternalServerError
 	}
 
@@ -169,7 +171,7 @@ func (as *roleAssignmentService) getAssignmentsByEntityCategory(
 		if errors.Is(err, errResultLimitExceededInCompositeMode) {
 			return nil, &ResultLimitExceededInCompositeMode
 		}
-		logger.ErrorWithContext(ctx, "Failed to get entity assignments count", log.String("id", id), log.Error(err))
+		logger.Error(ctx, "Failed to get entity assignments count", log.String("id", id), log.Error(err))
 		return nil, &serviceerror.InternalServerError
 	}
 
@@ -181,7 +183,7 @@ func (as *roleAssignmentService) getAssignmentsByEntityCategory(
 			if errors.Is(err, errResultLimitExceededInCompositeMode) {
 				return nil, &ResultLimitExceededInCompositeMode
 			}
-			logger.ErrorWithContext(ctx, "Failed to get entity assignments", log.String("id", id), log.Error(err))
+			logger.Error(ctx, "Failed to get entity assignments", log.String("id", id), log.Error(err))
 			return nil, &serviceerror.InternalServerError
 		}
 	}
@@ -195,7 +197,7 @@ func (as *roleAssignmentService) getAssignmentsByEntityCategory(
 		}
 		entities, fetchErr := as.entityService.GetEntitiesByIDs(ctx, entityIDs)
 		if fetchErr != nil {
-			logger.ErrorWithContext(ctx, "Failed to batch fetch entities for category filter", log.Error(fetchErr))
+			logger.Error(ctx, "Failed to batch fetch entities for category filter", log.Error(fetchErr))
 			return nil, &serviceerror.InternalServerError
 		}
 		for _, e := range entities {
@@ -245,7 +247,7 @@ func (as *roleAssignmentService) getAssignmentsByEntityCategory(
 func (as *roleAssignmentService) AddAssignments(
 	ctx context.Context, id string, assignments []RoleAssignment) *serviceerror.ServiceError {
 	logger := log.GetLogger().With(log.String(log.LoggerKeyComponentName, assignmentLoggerComponentName))
-	logger.DebugWithContext(ctx, "Adding assignments to role", log.String("id", id))
+	logger.Debug(ctx, "Adding assignments to role", log.String("id", id))
 
 	normalized, svcErr := as.prepareAssignments(ctx, id, assignments)
 	if svcErr != nil {
@@ -255,11 +257,11 @@ func (as *roleAssignmentService) AddAssignments(
 	if err := as.transactioner.Transact(ctx, func(txCtx context.Context) error {
 		return as.roleStore.AddAssignments(txCtx, id, normalized)
 	}); err != nil {
-		logger.ErrorWithContext(ctx, "Failed to add assignments to role", log.String("id", id), log.Error(err))
+		logger.Error(ctx, "Failed to add assignments to role", log.String("id", id), log.Error(err))
 		return &serviceerror.InternalServerError
 	}
 
-	logger.DebugWithContext(ctx, "Successfully added assignments to role", log.String("id", id))
+	logger.Debug(ctx, "Successfully added assignments to role", log.String("id", id))
 	return nil
 }
 
@@ -268,7 +270,7 @@ func (as *roleAssignmentService) AddAssignments(
 func (as *roleAssignmentService) RemoveAssignments(
 	ctx context.Context, id string, assignments []RoleAssignment) *serviceerror.ServiceError {
 	logger := log.GetLogger().With(log.String(log.LoggerKeyComponentName, assignmentLoggerComponentName))
-	logger.DebugWithContext(ctx, "Removing assignments from role", log.String("id", id))
+	logger.Debug(ctx, "Removing assignments from role", log.String("id", id))
 
 	normalized, svcErr := as.prepareAssignments(ctx, id, assignments)
 	if svcErr != nil {
@@ -278,11 +280,42 @@ func (as *roleAssignmentService) RemoveAssignments(
 	if err := as.transactioner.Transact(ctx, func(txCtx context.Context) error {
 		return as.roleStore.RemoveAssignments(txCtx, id, normalized)
 	}); err != nil {
-		logger.ErrorWithContext(ctx, "Failed to remove assignments from role", log.String("id", id), log.Error(err))
+		logger.Error(ctx, "Failed to remove assignments from role", log.String("id", id), log.Error(err))
 		return &serviceerror.InternalServerError
 	}
 
-	logger.DebugWithContext(ctx, "Successfully removed assignments from role", log.String("id", id))
+	logger.Debug(ctx, "Successfully removed assignments from role", log.String("id", id))
+	return nil
+}
+
+// AddAssigneesToRoles adds assignees to multiple roles in a single transaction.
+// A single failure rolls back all role assignments.
+func (as *roleAssignmentService) AddAssigneesToRoles(
+	ctx context.Context,
+	assignments []RoleAssignment,
+	roleIDs []string,
+) *serviceerror.ServiceError {
+	if len(roleIDs) == 0 || len(assignments) == 0 {
+		return nil
+	}
+	logger := log.GetLogger().With(log.String(log.LoggerKeyComponentName, assignmentLoggerComponentName))
+	var capturedSvcErr *serviceerror.ServiceError
+	err := as.transactioner.Transact(ctx, func(txCtx context.Context) error {
+		for _, rid := range roleIDs {
+			if svcErr := as.AddAssignments(txCtx, rid, assignments); svcErr != nil {
+				capturedSvcErr = svcErr
+				return fmt.Errorf("failed to assign role %s: %s", rid, svcErr.Error.DefaultValue)
+			}
+		}
+		return nil
+	})
+	if capturedSvcErr != nil {
+		return capturedSvcErr
+	}
+	if err != nil {
+		logger.Error(ctx, "Failed to add assignees to roles", log.Error(err))
+		return &serviceerror.InternalServerError
+	}
 	return nil
 }
 
@@ -304,11 +337,11 @@ func (as *roleAssignmentService) prepareAssignments(
 
 	exists, err := as.roleStore.IsRoleExist(ctx, id)
 	if err != nil {
-		logger.ErrorWithContext(ctx, "Failed to check role existence", log.String("id", id), log.Error(err))
+		logger.Error(ctx, "Failed to check role existence", log.String("id", id), log.Error(err))
 		return nil, &serviceerror.InternalServerError
 	}
 	if !exists {
-		logger.DebugWithContext(ctx, "Role not found", log.String("id", id))
+		logger.Debug(ctx, "Role not found", log.String("id", id))
 		return nil, &ErrorRoleNotFound
 	}
 
@@ -381,7 +414,7 @@ func validateAssignmentIDs(
 
 		entities, err := entitySvc.GetEntitiesByIDs(ctx, entityIDs)
 		if err != nil {
-			logger.ErrorWithContext(ctx, "Failed to fetch entities for assignment validation", log.Error(err))
+			logger.Error(ctx, "Failed to fetch entities for assignment validation", log.Error(err))
 			return &serviceerror.InternalServerError
 		}
 
@@ -393,7 +426,7 @@ func validateAssignmentIDs(
 			claimed := typeByID[e.ID]
 			actual := AssigneeType(e.Category)
 			if claimed != actual {
-				logger.DebugWithContext(ctx, "Assignment type mismatch", log.String("id", e.ID),
+				logger.Debug(ctx, "Assignment type mismatch", log.String("id", e.ID),
 					log.String("claimed", string(claimed)), log.String("actual", string(actual)))
 				return &ErrorInvalidAssignmentID
 			}
@@ -403,10 +436,10 @@ func validateAssignmentIDs(
 	if len(groupIDs) > 0 {
 		if err := groupSvc.ValidateGroupIDs(ctx, groupIDs); err != nil {
 			if err.Code == group.ErrorInvalidGroupMemberID.Code {
-				logger.DebugWithContext(ctx, "Invalid group member IDs found")
+				logger.Debug(ctx, "Invalid group member IDs found")
 				return &ErrorInvalidAssignmentID
 			}
-			logger.ErrorWithContext(ctx, "Failed to validate group IDs", log.String("error", err.Error.DefaultValue))
+			logger.Error(ctx, "Failed to validate group IDs", log.String("error", err.Error.DefaultValue))
 			return &serviceerror.InternalServerError
 		}
 	}
@@ -437,7 +470,7 @@ func (as *roleAssignmentService) resolveAssignments(
 	if len(entityIDs) > 0 {
 		entities, err := as.entityService.GetEntitiesByIDs(ctx, entityIDs)
 		if err != nil {
-			logger.ErrorWithContext(ctx, "Failed to batch fetch entities for assignments", log.Error(err))
+			logger.Error(ctx, "Failed to batch fetch entities for assignments", log.Error(err))
 			return nil, &serviceerror.InternalServerError
 		}
 		entityMap = make(map[string]*entity.Entity, len(entities))
@@ -451,7 +484,7 @@ func (as *roleAssignmentService) resolveAssignments(
 		var svcErr *serviceerror.ServiceError
 		groupsMap, svcErr = as.groupService.GetGroupsByIDs(ctx, groupIDs)
 		if svcErr != nil {
-			logger.WarnWithContext(ctx, "Failed to batch fetch groups for display names", log.Any("error", svcErr))
+			logger.Warn(ctx, "Failed to batch fetch groups for display names", log.Any("error", svcErr))
 		}
 	}
 
@@ -475,7 +508,7 @@ func (as *roleAssignmentService) resolveAssignments(
 		case assigneeTypeEntity:
 			e, ok := entityMap[a.ID]
 			if !ok {
-				logger.WarnWithContext(ctx, "Skipping orphaned entity assignment", log.String("id", a.ID))
+				logger.Warn(ctx, "Skipping orphaned entity assignment", log.String("id", a.ID))
 				continue
 			}
 			ra.Type = AssigneeType(e.Category)
@@ -539,7 +572,7 @@ func resolveDisplayAttributePaths(
 	displayPaths, svcErr := schemaService.GetDisplayAttributesByNames(ctx, entitytype.TypeCategoryUser, uniqueTypes)
 	if svcErr != nil {
 		if logger != nil {
-			logger.WarnWithContext(ctx, "Failed to resolve display attribute paths, skipping display resolution",
+			logger.Warn(ctx, "Failed to resolve display attribute paths, skipping display resolution",
 				log.Any("error", svcErr))
 		}
 		return nil

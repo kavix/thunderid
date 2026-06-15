@@ -44,7 +44,7 @@ export default function WelcomePage(): JSX.Element {
   const theme = useTheme();
   const {config} = useConfig();
   const productName = config.brand.product_name;
-  const docsBaseUrl = (config.brand.docs_url ?? '').replace(/\/$/, '');
+  const docsBaseUrl = (config.brand.documentation?.baseUrl ?? '').replace(/\/$/, '');
   const handleClose = useWelcomeClose();
 
   const handleCreateNewProject = (): void => {
@@ -67,20 +67,20 @@ export default function WelcomePage(): JSX.Element {
       description: t('common:welcome.start.openImportDesc', {productName}),
       action: () => {
         sessionStorage.setItem(getWelcomeDismissedStorageKey(productName), 'true');
-        void navigate('/welcome/open-project');
+        void navigate('/welcome/import-configuration');
       },
     },
   ];
 
   const learnProduct = [
     {
-      id: 'learn-consumer-app',
+      id: 'learn-securing-application',
       icon: <Users size={18} />,
-      label: t('common:welcome.tryoutProduct.consumerApp'),
-      description: t('common:welcome.tryoutProduct.consumerAppDesc'),
+      label: t('common:welcome.tryoutProduct.securingApplication'),
+      description: t('common:welcome.tryoutProduct.securingApplicationDesc'),
       action: () => {
         sessionStorage.setItem(getWelcomeDismissedStorageKey(productName), 'true');
-        void navigate('/welcome/tryout/consumer-app');
+        void navigate('/welcome/tryout/securing-application');
       },
     },
     {
@@ -88,8 +88,10 @@ export default function WelcomePage(): JSX.Element {
       icon: <Bot size={18} />,
       label: t('common:welcome.tryoutProduct.aiAgents'),
       description: t('common:welcome.tryoutProduct.aiAgentsDesc'),
-      action: () => window.open(`${docsBaseUrl}/use-cases/ai-agents/try-it-out`, '_blank', 'noopener,noreferrer'),
-      endIcon: <ExternalLink size={14} />,
+      action: () => {
+        sessionStorage.setItem(getWelcomeDismissedStorageKey(productName), 'true');
+        void navigate('/welcome/tryout/ai-agents');
+      },
     },
     {
       id: 'learn-mcp',

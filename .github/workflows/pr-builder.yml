@@ -508,9 +508,8 @@ jobs:
         with:
           node-version: ${{ env.NODE_VERSION }}
 
-      - name: 🧩 Build and Package Sample Apps
+      - name: 📦 Package Sample Apps
         run: |
-          make build_samples
           make package_samples OS=$(go env GOOS) ARCH=$(go env GOARCH)
 
       - name: 📦 Upload Built Sample App
@@ -856,11 +855,18 @@ jobs:
             rmdir "$EXTRACTED_DIR"
           fi
           
-          # Make start script executable
-          chmod +x start.sh
+          echo "Installing dependencies..."
+          npm install
+
+          echo "Generating SSL certificates..."
+          openssl req -x509 -nodes -days 365 -newkey rsa:2048 \
+              -keyout server.key \
+              -out server.cert \
+              -subj "/O=WSO2/OU=${{ env.PRODUCT_NAME }}/CN=localhost" \
+              > /dev/null 2>&1
 
           echo "Starting Sample App..."
-          ./start.sh &
+          npm run dev &
           
           # Wait for sample app to be ready
           echo "Waiting for sample app to be ready on https://localhost:3000..."

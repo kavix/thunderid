@@ -17,13 +17,14 @@
  */
 
 import {useConfig} from '@thunderid/contexts';
-import {Box, Breadcrumbs, Button, IconButton, Stack, Typography} from '@wso2/oxygen-ui';
-import {AppWindow, ChevronRight, SkipForward, X} from '@wso2/oxygen-ui-icons-react';
+import {Box, Button, IconButton, Stack, Typography} from '@wso2/oxygen-ui';
+import {AppWindow, Bot, MCP, SkipForward, X} from '@wso2/oxygen-ui-icons-react';
 import {motion} from 'framer-motion';
 import type {JSX} from 'react';
 import {useTranslation} from 'react-i18next';
 import {useNavigate} from 'react-router';
 import useWelcomeClose from '../hooks/useWelcomeClose';
+import AppBreadcrumbs from '@/components/AppBreadcrumbs';
 
 const MotionBox = motion.create(Box);
 
@@ -40,8 +41,27 @@ export default function GetStartedPage(): JSX.Element {
       icon: <AppWindow size={36} />,
       title: t('common:welcome.getStarted.options.onboardApp.title'),
       description: t('common:welcome.getStarted.options.onboardApp.description', {productName}),
-      action: () => void navigate('/applications/create'),
+      action: () => void navigate('/welcome/get-started/applications/create'),
       actionLabel: t('common:welcome.getStarted.options.onboardApp.action'),
+      disabled: false,
+    },
+    {
+      id: 'secure-ai-agent',
+      icon: <Bot size={36} />,
+      title: t('common:welcome.getStarted.options.secureAiAgent.title'),
+      description: t('common:welcome.getStarted.options.secureAiAgent.description'),
+      action: undefined,
+      actionLabel: t('common:welcome.getStarted.options.comingSoon'),
+      disabled: true,
+    },
+    {
+      id: 'secure-mcp',
+      icon: <MCP size={36} />,
+      title: t('common:welcome.getStarted.options.secureMcp.title'),
+      description: t('common:welcome.getStarted.options.secureMcp.description'),
+      action: undefined,
+      actionLabel: t('common:welcome.getStarted.options.comingSoon'),
+      disabled: true,
     },
   ];
 
@@ -62,48 +82,22 @@ export default function GetStartedPage(): JSX.Element {
           <Stack direction="row" spacing={2} sx={{alignItems: 'center'}}>
             <IconButton
               aria-label={t('common:actions.close')}
-              onClick={() => void navigate('/welcome')}
+              onClick={() => void navigate('/home')}
               sx={{bgcolor: 'background.paper', '&:hover': {bgcolor: 'action.hover'}, boxShadow: 1}}
             >
               <X size={24} />
             </IconButton>
-            <Breadcrumbs separator={<ChevronRight size={16} />} aria-label="breadcrumb">
-              <Typography
-                variant="h5"
-                color="inherit"
-                role="button"
-                tabIndex={0}
-                onClick={() => void navigate('/welcome')}
-                onKeyDown={(e: React.KeyboardEvent) => {
-                  if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault();
-                    void navigate('/welcome');
-                  }
-                }}
-                sx={{cursor: 'pointer', '&:hover': {textDecoration: 'underline'}}}
-              >
-                {t('common:welcome.header')}
-              </Typography>
-              <Typography
-                variant="h5"
-                color="inherit"
-                role="button"
-                tabIndex={0}
-                onClick={() => void navigate('/welcome/create-project')}
-                onKeyDown={(e: React.KeyboardEvent) => {
-                  if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault();
-                    void navigate('/welcome/create-project');
-                  }
-                }}
-                sx={{cursor: 'pointer', '&:hover': {textDecoration: 'underline'}}}
-              >
-                {t('common:welcome.createProject.breadcrumb')}
-              </Typography>
-              <Typography variant="h5" color="text.primary">
-                {t('common:welcome.getStarted.breadcrumb')}
-              </Typography>
-            </Breadcrumbs>
+            <AppBreadcrumbs
+              items={[
+                {key: 'welcome', label: t('common:welcome.header'), onClick: () => void navigate('/welcome')},
+                {
+                  key: 'create-project',
+                  label: t('common:welcome.createProject.breadcrumb'),
+                  onClick: () => void navigate('/welcome/create-project'),
+                },
+                {key: 'get-started', label: t('common:welcome.getStarted.breadcrumb')},
+              ]}
+            />
           </Stack>
         </Box>
 
@@ -147,7 +141,7 @@ export default function GetStartedPage(): JSX.Element {
                   initial={{opacity: 0, y: 16}}
                   animate={{opacity: 1, y: 0}}
                   transition={{duration: 0.35, delay: 0.2 + index * 0.1}}
-                  sx={{flex: '0 1 320px'}}
+                  sx={{flex: '1 1 0', minWidth: 0}}
                 >
                   <Box
                     sx={{
@@ -162,7 +156,7 @@ export default function GetStartedPage(): JSX.Element {
                       textAlign: 'center',
                       gap: 2,
                       transition: 'all 0.2s',
-                      '&:hover': {boxShadow: 2, borderColor: 'primary.main'},
+                      ...(option.disabled ? {opacity: 0.55} : {'&:hover': {boxShadow: 2, borderColor: 'primary.main'}}),
                     }}
                   >
                     <Box
@@ -185,7 +179,12 @@ export default function GetStartedPage(): JSX.Element {
                     <Typography variant="body2" color="text.secondary" sx={{flex: 1}}>
                       {option.description}
                     </Typography>
-                    <Button variant="contained" onClick={option.action} sx={{mt: 1, minWidth: 160}}>
+                    <Button
+                      variant="contained"
+                      onClick={option.action}
+                      disabled={option.disabled}
+                      sx={{mt: 1, minWidth: 160}}
+                    >
                       {option.actionLabel}
                     </Button>
                   </Box>

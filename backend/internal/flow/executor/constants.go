@@ -20,9 +20,9 @@ package executor
 
 // Executor name constants
 const (
-	ExecutorNameBasicAuth     = "BasicAuthExecutor"
-	ExecutorNameSMSAuth       = "SMSOTPAuthExecutor"
-	ExecutorNameMagicLinkAuth = "MagicLinkAuthExecutor"
+	ExecutorNameBasicAuth = "BasicAuthExecutor"
+	ExecutorNameSMSAuth   = "SMSOTPAuthExecutor"
+	ExecutorNameMagicLink = "MagicLinkExecutor"
 	// nolint:gosec // G101: This is an executor name, not a credential
 	ExecutorNamePasskeyAuth                  = "PasskeyAuthExecutor"
 	ExecutorNameOAuth                        = "OAuthExecutor"
@@ -104,6 +104,8 @@ const (
 	propertyKeyMaxDynamicInputsPerPrompt               = "maxPerPrompt"
 	propertyKeyInviteBaseURL                           = "inviteBaseURL"
 	propertyKeyPresentationDefinitionID                = "presentation_definition_id"
+	propertyKeyCallbackType                            = "callbackType"
+	propertyKeyLoginHintAttribute                      = "loginHintAttribute"
 )
 
 // nonSearchableInputs contains the list of user inputs/ attributes that are non-searchable.

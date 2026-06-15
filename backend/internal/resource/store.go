@@ -40,6 +40,7 @@ type resourceStoreInterface interface {
 	CheckResourceServerNameExists(ctx context.Context, name string) (bool, error)
 	CheckResourceServerHandleExists(ctx context.Context, handle string) (bool, error)
 	CheckResourceServerIdentifierExists(ctx context.Context, identifier string) (bool, error)
+	GetResourceServerByHandle(ctx context.Context, handle string) (ResourceServer, error)
 	GetResourceServerByIdentifier(ctx context.Context, identifier string) (ResourceServer, error)
 	CheckResourceServerHasDependencies(ctx context.Context, resServerID string) (bool, error)
 	IsResourceServerDeclarative(id string) bool
@@ -114,6 +115,7 @@ func (s *resourceStore) CreateResourceServer(ctx context.Context, id string, rs 
 			rs.Description,
 			resolveNullableString(rs.Handle),
 			resolveNullableString(rs.Identifier),
+			resolveNullableString(string(rs.Type)),
 			buildPropertiesJSON(rs),
 			s.deploymentID,
 		)
@@ -196,6 +198,7 @@ func (s *resourceStore) UpdateResourceServer(ctx context.Context, id string, rs 
 			rs.Description,
 			resolveNullableString(rs.Handle),
 			resolveNullableString(rs.Identifier),
+			resolveNullableString(string(rs.Type)),
 			buildPropertiesJSON(rs),
 			id,
 			s.deploymentID,
@@ -263,6 +266,25 @@ func (s *resourceStore) CheckResourceServerIdentifierExists(ctx context.Context,
 		return err
 	})
 	return exists, err
+}
+
+// GetResourceServerByHandle retrieves a resource server by its handle.
+func (s *resourceStore) GetResourceServerByHandle(ctx context.Context, handle string) (ResourceServer, error) {
+	var rs ResourceServer
+	err := s.withDBClient(func(dbClient provider.DBClientInterface) error {
+		results, err := dbClient.QueryContext(ctx, queryGetResourceServerByHandle, handle, s.deploymentID)
+		if err != nil {
+			return fmt.Errorf("failed to get resource server by handle: %w", err)
+		}
+
+		if len(results) == 0 {
+			return errResourceServerNotFound
+		}
+
+		rs, err = buildResourceServerFromResultRow(results[0])
+		return err
+	})
+	return rs, err
 }
 
 // GetResourceServerByIdentifier retrieves a resource server by its identifier.
@@ -1025,6 +1047,10 @@ func buildResourceServerFromResultRow(row map[string]interface{}) (ResourceServe
 
 	if identifier, ok := row["identifier"].(string); ok {
 		rs.Identifier = identifier
+	}
+
+	if rsType, ok := row["type"].(string); ok {
+		rs.Type = ResourceServerType(rsType)
 	}
 
 	resolveProperties(row, &rs)

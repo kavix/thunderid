@@ -4,7 +4,7 @@ packages:
   - frontend/packages/*
   - docs
   - sdks/**
-  - samples/apps/*
+  - samples/apps/**
   - tools/*
   - tests/e2e
 
@@ -93,6 +93,8 @@ catalog:
   uuid: 11.1.1
 
 overrides:
+  # JUSTIFICATION: Fixes GHSA-w7jw-789q-3m8p by overriding to fix docusaurus version in docs workspace only.
+  "@thunderid/docs>shell-quote": 1.8.4
   # JUSTIFICATION: The `ws` package is a transitive dependency of `docusaurus/core -> webpack-bundle-analyzer` and it requires a major version bump.
   ws: '>=8.20.1'
   # JUSTIFICATION: Packed through next@15.5.18. Could be resolved once next is updated to 16 versions.
@@ -130,6 +132,10 @@ overrides:
   js-cookie: 3.0.7
   # JUSTIFICATION: @langchain/langgraph requires uuid@^10.0.0 (not yet bumped upstream to v11). Fixes predictable RNG vulnerability in uuid < 11.1.1.
   uuid: 11.1.1
+  # JUSTIFICATION: Transitive dep via docusaurus. Fixes CVE-2026-48038 (GHSA-q7cg-457f-vx79) — uncaught RangeError DoS in joi on deeply nested input through recursive link() schemas.
+  joi: '>=18.2.1'
+  # JUSTIFICATION: Fixes GHSA-gv7w-rqvm-qjhr — esbuild Deno module downloads native binaries without integrity verification, enabling RCE via NPM_CONFIG_REGISTRY.
+  esbuild: '>=0.28.1'
 
 packageExtensions:
   '@hookform/resolvers':

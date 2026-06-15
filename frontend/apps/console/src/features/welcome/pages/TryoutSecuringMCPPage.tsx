@@ -17,11 +17,10 @@
  */
 
 import {useConfig} from '@thunderid/contexts';
-import {Box, Button, Stack, Tab, Tabs, Typography, IconButton, LinearProgress, Breadcrumbs} from '@wso2/oxygen-ui';
+import {Box, Button, Stack, Tab, Tabs, Typography, IconButton, LinearProgress} from '@wso2/oxygen-ui';
 import {
   BookOpen,
   Check,
-  ChevronRight,
   Copy,
   ExternalLink,
   Link2,
@@ -39,6 +38,7 @@ import {useNavigate} from 'react-router';
 import TerminalBlock from '../components/TerminalBlock';
 import WayfinderSampleSetup from '../components/WayfinderSampleSetup';
 import useWelcomeClose from '../hooks/useWelcomeClose';
+import AppBreadcrumbs from '@/components/AppBreadcrumbs';
 
 const MotionBox = motion.create(Box);
 
@@ -151,6 +151,30 @@ function tLink(i18nKey: string, href: string): JSX.Element {
   return <Trans ns="common" i18nKey={i18nKey} components={{a: <ExternalAppLink href={href} />}} />;
 }
 
+function tCode(i18nKey: string): JSX.Element {
+  return (
+    <Trans
+      ns="common"
+      i18nKey={i18nKey}
+      components={{
+        code: (
+          <Box
+            component="code"
+            sx={{
+              fontFamily: 'monospace',
+              fontSize: '0.85em',
+              color: 'primary.main',
+              bgcolor: 'action.selected',
+              borderRadius: 0.5,
+              px: 0.5,
+            }}
+          />
+        ),
+      }}
+    />
+  );
+}
+
 function CodeBlock({code}: {code: string}): JSX.Element {
   const [copied, setCopied] = useState(false);
   const handleCopy = (): void => {
@@ -203,7 +227,7 @@ export default function TryoutSecuringMCPPage(): JSX.Element {
   const {config} = useConfig();
   const handleClose = useWelcomeClose();
   const productName = config.brand.product_name;
-  const docsBaseUrl = (config.brand.docs_url ?? '').replace(/\/$/, '');
+  const docsBaseUrl = (config.brand.documentation?.baseUrl ?? '').replace(/\/$/, '');
 
   const [scenarioTab, setScenarioTab] = useState<ScenarioTab>('connect');
 
@@ -256,27 +280,12 @@ export default function TryoutSecuringMCPPage(): JSX.Element {
             >
               <X size={24} />
             </IconButton>
-            <Breadcrumbs separator={<ChevronRight size={16} />} aria-label="breadcrumb">
-              <Typography
-                variant="h5"
-                color="inherit"
-                role="button"
-                tabIndex={0}
-                onClick={() => void navigate('/welcome')}
-                onKeyDown={(e: React.KeyboardEvent) => {
-                  if (e.key === 'Enter' || e.key === ' ') {
-                    e.preventDefault();
-                    void navigate('/welcome');
-                  }
-                }}
-                sx={{cursor: 'pointer', '&:hover': {textDecoration: 'underline'}}}
-              >
-                {t('common:welcome.header')}
-              </Typography>
-              <Typography variant="h5" color="text.primary">
-                {t('common:welcome.mcpTryout.breadcrumb')}
-              </Typography>
-            </Breadcrumbs>
+            <AppBreadcrumbs
+              items={[
+                {key: 'welcome', label: t('common:welcome.header'), onClick: () => void navigate('/welcome')},
+                {key: 'tryout', label: t('common:welcome.mcpTryout.breadcrumb')},
+              ]}
+            />
           </Stack>
         </Box>
 
@@ -478,8 +487,8 @@ export default function TryoutSecuringMCPPage(): JSX.Element {
                       </Typography>
                       <StepList
                         steps={[
-                          t('common:welcome.mcpTryout.scenarios.permissions.step1'),
-                          t('common:welcome.mcpTryout.scenarios.permissions.step2'),
+                          tCode('common:welcome.mcpTryout.scenarios.permissions.step1'),
+                          tCode('common:welcome.mcpTryout.scenarios.permissions.step2'),
                           t('common:welcome.mcpTryout.scenarios.permissions.step3'),
                           t('common:welcome.mcpTryout.scenarios.permissions.step4'),
                         ]}

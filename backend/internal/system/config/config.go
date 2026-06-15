@@ -37,6 +37,7 @@ import (
 )
 
 const schemeHTTPS = "https"
+const localhost = "localhost"
 
 // SecurityConfig holds the security-related configuration details.
 //
@@ -73,12 +74,13 @@ type ServerConfig struct {
 
 // GateClientConfig holds the client configuration details.
 type GateClientConfig struct {
-	Hostname  string `yaml:"hostname" json:"hostname"`
-	Port      int    `yaml:"port" json:"port"`
-	Scheme    string `yaml:"scheme" json:"scheme"`
-	Path      string `yaml:"path" json:"path"`
-	LoginPath string `yaml:"login_path" json:"login_path"`
-	ErrorPath string `yaml:"error_path" json:"error_path"`
+	Hostname     string `yaml:"hostname" json:"hostname"`
+	Port         int    `yaml:"port" json:"port"`
+	Scheme       string `yaml:"scheme" json:"scheme"`
+	Path         string `yaml:"path" json:"path"`
+	LoginPath    string `yaml:"login_path" json:"login_path"`
+	ErrorPath    string `yaml:"error_path" json:"error_path"`
+	CallbackPath string `yaml:"callback_path" json:"callback_path"`
 }
 
 // TLSConfig holds the TLS configuration details.
@@ -264,6 +266,11 @@ func (c *DPoPConfig) Validate() error {
 	return nil
 }
 
+// CIBAConfig holds the CIBA configuration.
+type CIBAConfig struct {
+	IDTokenHintMaxAgeDays int `yaml:"id_token_hint_max_age_days" json:"id_token_hint_max_age_days"`
+}
+
 // OAuthConfig holds the OAuth configuration details.
 type OAuthConfig struct {
 	RefreshToken      RefreshTokenConfig      `yaml:"refresh_token" json:"refresh_token"`
@@ -272,6 +279,7 @@ type OAuthConfig struct {
 	PAR               PARConfig               `yaml:"par" json:"par"`
 	DPoP              DPoPConfig              `yaml:"dpop" json:"dpop"`
 	AuthClass         AuthClassConfig         `yaml:"auth_class" json:"auth_class"`
+	CIBA              CIBAConfig              `yaml:"ciba" json:"ciba"`
 	// AllowWildcardRedirectURI enables wildcard pattern matching for redirect URIs.
 	// When false (default), only exact redirect URI matching is performed.
 	AllowWildcardRedirectURI bool `yaml:"allow_wildcard_redirect_uri" json:"allow_wildcard_redirect_uri"`
@@ -284,6 +292,10 @@ type FlowConfig struct {
 	MaxVersionHistory        int    `yaml:"max_version_history" json:"max_version_history"`
 	AutoInferRegistration    bool   `yaml:"auto_infer_registration" json:"auto_infer_registration"`
 	Store                    string `yaml:"store" json:"store"`
+	// Executors lists built-in executor names to register (e.g. BasicAuthExecutor).
+	// When empty, all built-in executors are registered. When set, only listed executors
+	// are available; omit only executors you intentionally disable on this node.
+	Executors []string `yaml:"executors" json:"executors"`
 }
 
 // CryptoConfig holds the cryptographic configuration details.
@@ -690,7 +702,7 @@ func (c *TrustedIssuerConfig) Validate() error {
 		return nil
 	case "http":
 		host := parsed.Hostname()
-		if host == "localhost" || host == "127.0.0.1" || host == "::1" {
+		if host == localhost || host == "127.0.0.1" || host == "::1" {
 			return nil
 		}
 		return fmt.Errorf(
@@ -805,6 +817,9 @@ func LoadConfig(configPath string, defaultPath string, serverHome string) (*Conf
 		}
 		if cfg.GateClient.ErrorPath == "" {
 			cfg.GateClient.ErrorPath = urlpath.Join(cfg.GateClient.Path, "error")
+		}
+		if cfg.GateClient.CallbackPath == "" {
+			cfg.GateClient.CallbackPath = urlpath.Join(cfg.GateClient.Path, "callback")
 		}
 	}
 

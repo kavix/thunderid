@@ -153,36 +153,35 @@ const translations = {
     'welcome.dismissed': 'Welcome window can be reopened through the user dropdown menu.',
     'welcome.sections.start': 'Start',
     'welcome.sections.recent': 'Recent',
-    'welcome.sections.tryoutProduct': 'Tryout',
-    'welcome.tryoutProduct.consumerApp': 'Securing Consumer App',
-    'welcome.tryoutProduct.consumerAppDesc': 'Tryout user journeys for a consumer-facing app',
-    'welcome.tryoutProduct.aiAgents': 'Securing AI Agents',
-    'welcome.tryoutProduct.aiAgentsDesc': 'Tryout identity patterns for AI agents and tools',
-    'welcome.tryoutProduct.mcp': 'Securing MCP',
-    'welcome.tryoutProduct.mcpDesc': 'Try authorizing MCP clients to your MCP server',
-    'welcome.start.newProject': 'New / Continue',
-    'welcome.start.newProjectDesc': 'Configure a new project or edit existing',
-    'welcome.start.openImport': 'Open',
-    'welcome.start.openImportDesc': 'Import an existing {{productName}} configuration',
+    'welcome.sections.tryoutProduct': 'Try Sample',
+    'welcome.tryoutProduct.securingApplication': 'Secured Web Application',
+    'welcome.tryoutProduct.securingApplicationDesc': 'Tryout user journeys of a secured web application',
+    'welcome.tryoutProduct.aiAgents': 'Secured AI Agent',
+    'welcome.tryoutProduct.aiAgentsDesc': 'Tryout identity security patterns for AI agents and tools',
+    'welcome.tryoutProduct.mcp': 'Secured MCP Server',
+    'welcome.tryoutProduct.mcpDesc': 'Tryout authorizing MCP client to a secured MCP server',
+    'welcome.start.newProject': 'New',
+    'welcome.start.newProjectDesc': 'Onboard your first resource to start',
+    'welcome.start.openImport': 'Import',
+    'welcome.start.openImportDesc': 'Import an existing {{productName}} configuration file',
     'welcome.start.startSamples': 'Start with samples',
     'welcome.start.connectTo': 'Connect to \u2026',
-    'welcome.noRecentItems': 'No recent projects found',
+    'welcome.noRecentItems': 'No recent items found',
     'welcome.hero.titlePrefix': 'Welcome to',
-    'welcome.hero.subtitle': 'Design and configure your Identity & Access Management project',
+    'welcome.hero.subtitle': 'Secure your digital resources and manage user identities and access',
     'welcome.walkthrough.getStartedDesigner': 'Get started',
     'welcome.walkthrough.getStartedDesignerDesc': 'Learn how to design and customize your identity experience',
     'welcome.walkthrough.learnFundamentals': 'Learn the Fundamentals',
     'welcome.walkthrough.learnFundamentalsDesc': 'Understand core concepts and architecture',
     'welcome.createProject.breadcrumb': 'New',
-    'welcome.createProject.title': "Let's Create Your Identity Project",
+    'welcome.createProject.title': 'How {{productName}} Works!',
     'welcome.createProject.subtitle':
-      'This wizard will guide you through minimal configuration for your project and generate the necessary configs to run {{productName}}.',
-    'welcome.createProject.cards.configure.title': 'Configure Project',
+      'Onboard your digital resources, configure security, verify the setup, and run {{productName}} with your configuration in production deployment.',
+    'welcome.createProject.cards.configure.title': 'Configure',
     'welcome.createProject.cards.configure.description':
-      "Set up your project's authentication flows, choose sign-in methods, and customize the user experience.",
+      'Set up authentication flows, choose sign-in methods, and customize the user experience.',
     'welcome.createProject.cards.verify.title': 'Verify',
-    'welcome.createProject.cards.verify.description':
-      'Test your project configuration to ensure everything works as expected.',
+    'welcome.createProject.cards.verify.description': 'Test your configuration to ensure everything works as expected.',
     'welcome.createProject.cards.runServer.title': 'Run Server',
     'welcome.createProject.cards.runServer.description':
       '{{productName}} will run in immutable mode with the attached configurations.',
@@ -192,27 +191,23 @@ const translations = {
     'welcome.wayfinderSampleSetup.setupComplete': 'Already set up — you can skip this section',
     'welcome.wayfinderSampleSetup.steps.getSample.title': 'Get the Wayfinder Sample',
     'welcome.wayfinderSampleSetup.steps.getSample.description':
-      'Download the latest Wayfinder sample distribution and extract the archive. It ships with the web frontend, AI agent service, and Wayfinder server.',
+      'Download the latest Wayfinder sample distribution and extract the archive. It ships with the <strong>web frontend</strong>, <strong>AI agent service</strong>, <strong>MCP</strong>, <strong>SMTP mail server</strong> and <strong>Wayfinder server</strong>.',
     'welcome.wayfinderSampleSetup.steps.configure.title': 'Configure Wayfinder Sample in {{productName}}',
     'welcome.wayfinderSampleSetup.steps.configure.description':
       'Apply the Wayfinder sample configurations to {{productName}}. Skip this step if already done.',
     'welcome.wayfinderSampleSetup.steps.run.title': 'Run the Sample',
     'welcome.wayfinderSampleSetup.steps.run.description':
       'Start all Wayfinder services from the extracted sample directory.',
-    'welcome.wayfinderSampleDownload.recommendedLabel': 'Recommended for this device',
-    'welcome.wayfinderSampleDownload.selectedLabel': 'Selected download',
-    'welcome.wayfinderSampleDownload.downloadButton': 'Download for {{osLabel}}',
-    'welcome.wayfinderSampleDownload.otherPlatforms': 'Other download options',
-    'welcome.wayfinderSampleDownload.hidePlatforms': 'Hide other platforms',
+    'welcome.wayfinderSampleDownload.downloadButton': 'Download',
 
     'welcome.wayfinderFolderImport.actions.selectFolder': 'Select Wayfinder Sample Folder',
     'welcome.wayfinderFolderImport.actions.change': 'Change',
-    'welcome.wayfinderFolderImport.actions.importConfig': 'Configure in ThunderID',
-    'welcome.wayfinderFolderImport.actions.reImport': 'Re-import',
+    'welcome.wayfinderFolderImport.actions.importConfig': 'Configure in {{productName}}',
+    'welcome.wayfinderFolderImport.actions.reconfigure': 'Reconfigure',
     'welcome.wayfinderFolderImport.actions.reSelectFolder': 'Re-select Folder',
     'welcome.wayfinderFolderImport.status.importing': 'Importing configuration…',
     'welcome.wayfinderFolderImport.status.alreadyDone': 'Wayfinder sample already configured in {{productName}}',
-    'welcome.wayfinderFolderImport.status.lastImported': 'Last imported on {{date}} — you can skip this step.',
+    'welcome.wayfinderFolderImport.status.lastImported': 'Last configured on {{date}} — you can skip this step.',
     'welcome.wayfinderFolderImport.status.success': 'Wayfinder sample configured in {{productName}} successfully',
     'welcome.wayfinderFolderImport.status.resourcesImported_one': '{{count}} resource imported',
     'welcome.wayfinderFolderImport.status.resourcesImported_other': '{{count}} resources imported',
@@ -230,116 +225,134 @@ const translations = {
     'welcome.getStarted.breadcrumb': 'Get started',
     'welcome.getStarted.actions.skipToConsole': 'Skip to console',
     'welcome.getStarted.title': 'Get Started',
-    'welcome.getStarted.subtitle': 'Onboard your first application and start securing it with {{productName}}.',
-    'welcome.getStarted.options.onboardApp.title': 'Onboard your first app',
+    'welcome.getStarted.subtitle': 'Onboard your first resource and start securing it with {{productName}}.',
+    'welcome.getStarted.options.onboardApp.title': 'Web Application',
     'welcome.getStarted.options.onboardApp.description':
       'Register your application in {{productName}} and integrate authentication step by step.',
     'welcome.getStarted.options.onboardApp.action': 'Add Application',
+    'welcome.getStarted.options.secureAiAgent.title': 'Secure an AI Agent',
+    'welcome.getStarted.options.secureAiAgent.description':
+      'Protect your AI agents with token-based access control and scope enforcement.',
+    'welcome.getStarted.options.secureMcp.title': 'Secure MCP Server / Client',
+    'welcome.getStarted.options.secureMcp.description':
+      'Authorize MCP clients to access your MCP server with fine-grained permissions.',
+    'welcome.getStarted.options.comingSoon': 'Coming Soon',
     'welcome.getStarted.options.skip.title': 'Skip for now',
     'welcome.getStarted.options.skip.description':
       'Head straight to the console and explore {{productName}} on your own.',
     'welcome.getStarted.options.skip.action': 'Go to Console',
 
-    'welcome.consumerAppTryout.breadcrumb': 'Tryout Securing Consumer App',
-    'welcome.consumerAppTryout.overline': 'Securing Consumer App',
-    'welcome.consumerAppTryout.title': 'Secure Your Consumer App',
-    'welcome.consumerAppTryout.subtitle':
-      'Run consumer app use cases against the Wayfinder sample, a fictional consumer travel-booking app.',
-    'welcome.consumerAppTryout.steps.getSample.title': 'Get the Wayfinder Sample',
-    'welcome.consumerAppTryout.steps.getSample.description':
-      'Download the latest Wayfinder sample distribution and extract the archive. It ships with the web frontend, AI agent service, and Wayfinder server.',
-    'welcome.consumerAppTryout.steps.getSample.action': 'Download Sample',
-    'welcome.consumerAppTryout.steps.importConfigs.title': 'Configure Wayfinder Sample in {{productName}}',
-    'welcome.consumerAppTryout.steps.importConfigs.description':
+    'welcome.applicationTryout.breadcrumb': 'Tryout Secured Web Application',
+    'welcome.applicationTryout.overline': 'Secured Web Application',
+    'welcome.applicationTryout.title': 'Secure Your Application',
+    'welcome.applicationTryout.subtitle':
+      'Run web application use cases against the Wayfinder sample, a fictional travel-booking application.',
+    'welcome.applicationTryout.steps.getSample.title': 'Get the Wayfinder Sample',
+    'welcome.applicationTryout.steps.getSample.description':
+      'Download the latest Wayfinder sample distribution and extract the archive. It ships with the web frontend, AI agent service, MCP, SMTP mail server and Wayfinder server.',
+    'welcome.applicationTryout.steps.getSample.action': 'Download Sample',
+    'welcome.applicationTryout.steps.importConfigs.title': 'Configure Wayfinder Sample in {{productName}}',
+    'welcome.applicationTryout.steps.importConfigs.description':
       'Apply the Wayfinder sample configurations to {{productName}}.',
-    'welcome.consumerAppTryout.steps.runSample.title': 'Run the Sample',
-    'welcome.consumerAppTryout.steps.runSample.description':
+    'welcome.applicationTryout.steps.runSample.title': 'Run the Sample',
+    'welcome.applicationTryout.steps.runSample.description':
       'Start all Wayfinder services from the extracted sample directory.',
-    'welcome.consumerAppTryout.steps.runSample.action': 'See Run Instructions',
-    'welcome.consumerAppTryout.steps.login.title': 'Log In to the App',
-    'welcome.consumerAppTryout.steps.login.description':
+    'welcome.applicationTryout.steps.runSample.action': 'See Run Instructions',
+    'welcome.applicationTryout.steps.login.title': 'Sign-In to the App',
+    'welcome.applicationTryout.steps.login.description':
       'Open the Wayfinder sample app and sign in with the demo credentials below.',
 
-    'welcome.consumerAppTryout.scenarios.title': 'Try use cases',
-    'welcome.consumerAppTryout.scenarios.tabs.login': 'Log In',
-    'welcome.consumerAppTryout.scenarios.tabs.signup': 'Self Sign-Up',
-    'welcome.consumerAppTryout.scenarios.tabs.profile': 'View Profile',
-    'welcome.consumerAppTryout.scenarios.tabs.recovery': 'Account Recovery',
-    'welcome.consumerAppTryout.scenarios.tabs.onboard': 'Onboard Staff',
+    'welcome.applicationTryout.scenarios.title': 'Try the following user journeys',
+    'welcome.applicationTryout.scenarios.tabs.login': 'Sign-In',
+    'welcome.applicationTryout.scenarios.tabs.signup': 'Self Sign-Up',
+    'welcome.applicationTryout.scenarios.tabs.profile': 'View Profile',
+    'welcome.applicationTryout.scenarios.tabs.recovery': 'Account Recovery',
+    'welcome.applicationTryout.scenarios.tabs.onboard': 'Staff Sign-Up',
+    'welcome.applicationTryout.scenarios.tabs.mfa': 'Multi-Factor Authentication',
+    'welcome.applicationTryout.scenarios.tabs.social': 'Social Login',
 
-    'welcome.consumerAppTryout.scenarios.login.description':
-      'Sign in with the demo consumer account to explore the Wayfinder app.',
-    'welcome.consumerAppTryout.scenarios.login.step1': 'Open the Wayfinder app at <a>http://localhost:5173</a>.',
-    'welcome.consumerAppTryout.scenarios.login.step2': 'Click Sign in and use the credentials below.',
+    'welcome.applicationTryout.scenarios.login.description':
+      'Sign in with the test user account to explore {{productName}} Sign in experience.',
+    'welcome.applicationTryout.scenarios.login.step1': 'Open the Wayfinder app at <a>http://localhost:5173</a>.',
+    'welcome.applicationTryout.scenarios.login.step2': 'Click Sign in and use the credentials below.',
 
-    'welcome.consumerAppTryout.scenarios.signup.description':
-      'Register a new customer account and see ThunderID assign the Traveler role automatically on completion.',
-    'welcome.consumerAppTryout.scenarios.signup.step1': 'Open <a>http://localhost:5173</a> and click Sign in.',
-    'welcome.consumerAppTryout.scenarios.signup.step2': 'On the ThunderID page, click Sign up.',
-    'welcome.consumerAppTryout.scenarios.signup.step3': 'Fill in the registration form using the sample details below.',
-    'welcome.consumerAppTryout.scenarios.signup.sampleFields.username': 'Username',
-    'welcome.consumerAppTryout.scenarios.signup.sampleFields.email': 'Email',
-    'welcome.consumerAppTryout.scenarios.signup.sampleFields.givenName': 'Given name',
-    'welcome.consumerAppTryout.scenarios.signup.sampleFields.familyName': 'Family name',
-    'welcome.consumerAppTryout.scenarios.signup.step4':
-      'Submit. ThunderID creates a Customer user, records terms acceptance, and assigns the Traveler role.',
-    'welcome.consumerAppTryout.scenarios.signup.step5':
-      'The browser redirects back to Wayfinder with the new account authenticated.',
-
-    'welcome.consumerAppTryout.scenarios.profile.description':
-      'Explore the self-service profile page — view account details, edit attributes, and change your password.',
-    'welcome.consumerAppTryout.scenarios.profile.step1': 'Sign in as john.doe at <a>http://localhost:5173</a>.',
-    'welcome.consumerAppTryout.scenarios.profile.step2':
+    'welcome.applicationTryout.scenarios.signup.description':
+      'Register a new customer account and see {{productName}} assign the Traveler role automatically on completion.',
+    'welcome.applicationTryout.scenarios.signup.step1': 'Open <a>http://localhost:5173</a> and click Sign in.',
+    'welcome.applicationTryout.scenarios.signup.step2': 'On the {{productName}} page, click Sign up.',
+    'welcome.applicationTryout.scenarios.signup.step3': 'Fill in below sample details and click Continue.',
+    'welcome.applicationTryout.scenarios.signup.sampleFields.username': 'Username',
+    'welcome.applicationTryout.scenarios.signup.sampleFields.password': 'Password',
+    'welcome.applicationTryout.scenarios.signup.sampleFields.email': 'Email',
+    'welcome.applicationTryout.scenarios.signup.sampleFields.givenName': 'First name',
+    'welcome.applicationTryout.scenarios.signup.sampleFields.familyName': 'Last name',
+    'welcome.applicationTryout.scenarios.signup.sampleFields.mobileNumber': 'Mobile number',
+    'welcome.applicationTryout.scenarios.signup.step4':
+      'Fill in the registration form using these sample details and click Submit.',
+    'welcome.applicationTryout.scenarios.signup.step5':
+      '{{productName}} will create a Customer user and assign the Traveler role. The browser shows a confirmation screen with a link to redirect back to the Wayfinder app.',
+    'welcome.applicationTryout.scenarios.profile.description':
+      'Explore the self-service profile page - view account details, edit attributes, and change your password.',
+    'welcome.applicationTryout.scenarios.profile.step1': 'Sign in as John at <a>http://localhost:5173</a>.',
+    'welcome.applicationTryout.scenarios.profile.step2':
       'Click the username in the top-right corner and select Profile.',
-    'welcome.consumerAppTryout.scenarios.profile.step3':
-      'View account details, edit profile attributes, or change your password. The page calls the identity provider directly with your session token.',
+    'welcome.applicationTryout.scenarios.profile.step3':
+      'View account details, edit profile attributes, or change your password. The page calls {{productName}} directly with your session token.',
 
-    'welcome.consumerAppTryout.scenarios.recovery.description':
-      'Walk through the password recovery flow — John forgets his password and resets it via email.',
-    'welcome.consumerAppTryout.scenarios.recovery.smtpNote':
-      "Recovery emails require a configured SMTP server. Add your SMTP settings under email.smtp in {{productName}}'s deployment.yaml and restart the server before trying this flow.",
-    'welcome.consumerAppTryout.scenarios.recovery.step1': 'Open <a>http://localhost:5173</a> and click Sign in.',
-    'welcome.consumerAppTryout.scenarios.recovery.step2': 'On the ThunderID sign-in page, click Forgot password?',
-    'welcome.consumerAppTryout.scenarios.recovery.step3': 'Enter john.doe as the username and submit.',
-    'welcome.consumerAppTryout.scenarios.recovery.step4':
-      "ThunderID sends a recovery email to John's registered address.",
-    'welcome.consumerAppTryout.scenarios.recovery.step5': 'Open the link in the email and set a new password.',
-    'welcome.consumerAppTryout.scenarios.recovery.step6': 'Sign in again with the new credentials.',
+    'welcome.applicationTryout.scenarios.recovery.description':
+      'Walk through the password recovery flow - John forgets his password and resets it via email.',
+    'welcome.applicationTryout.scenarios.recovery.step1': 'Open <a>http://localhost:5173</a> and click Sign in.',
+    'welcome.applicationTryout.scenarios.recovery.step2': 'On the {{productName}} sign-in page, click Forgot password?',
+    'welcome.applicationTryout.scenarios.recovery.step3': 'Enter john.doe as the username and submit.',
+    'welcome.applicationTryout.scenarios.recovery.step4':
+      "{{productName}} sends a recovery email to John's registered address. Open it from the inbox at <mail>http://localhost:8788</mail>.",
+    'welcome.applicationTryout.scenarios.recovery.step5': 'Click the reset link in the email and set a new password.',
+    'welcome.applicationTryout.scenarios.recovery.step6': 'Sign in again with the new credentials.',
 
-    'welcome.consumerAppTryout.scenarios.onboard.description':
-      'Invite and onboard a new staff member using the staff invitation flow. The invited user selects a role (Support or DestinationsAdmin) during onboarding.',
-    'welcome.consumerAppTryout.scenarios.onboard.smtpNote':
-      "Staff invitation emails require a configured SMTP server. Add your SMTP settings under email.smtp in {{productName}}'s deployment.yaml and restart the server before trying this flow.",
-    'welcome.consumerAppTryout.scenarios.onboard.step1':
-      'Sign in as alex.carter (OpsAdmin) at <a>http://localhost:5173</a> using the credentials below.',
-    'welcome.consumerAppTryout.scenarios.onboard.step2':
-      'Navigate to the staff management section and invite a new staff member by email.',
-    'welcome.consumerAppTryout.scenarios.onboard.step3':
-      'The invited user receives an onboarding email. They open the link and complete the onboarding flow, choosing between the Support and DestinationsAdmin roles.',
-    'welcome.consumerAppTryout.scenarios.onboard.step4':
-      'Once onboarded, the new staff member can sign in to the app with their chosen role permissions active.',
+    'welcome.applicationTryout.scenarios.onboard.description':
+      'Invite and onboard two new staff members entirely from the {{productName}} Console: Sam Rivera (Support) and Maya Patel (DestinationsAdmin). The admin picks the staff role and sends the invitation, and the matching role is attached automatically when the invitee completes their profile.',
+    'welcome.applicationTryout.scenarios.onboard.smtpNote':
+      "Before trying this flow, set flow.user_onboarding_flow_handle to wayfinder-onboarding-flow in {{productName}}'s deployment.yaml and restart the server.",
+    'welcome.applicationTryout.scenarios.onboard.step1': 'Sign in to the {{productName}} Console as your admin user.',
+    'welcome.applicationTryout.scenarios.onboard.step2': 'Navigate to Users and select Add User.',
+    'welcome.applicationTryout.scenarios.onboard.step3': 'Select Staff as the user type.',
+    'welcome.applicationTryout.scenarios.onboard.step4':
+      "Pick Support as the role, enter Sam Rivera's email (sam.rivera@example.com), and click Send invitation. An invite link is emailed to Sam.",
+    'welcome.applicationTryout.scenarios.onboard.step5':
+      "Open Sam's invitation email from the inbox at <mail>http://localhost:8788</mail> and open the link. The browser opens a Complete Your Profile page.",
+    'welcome.applicationTryout.scenarios.onboard.step6':
+      "Fill in the additional attributes and submit. Sam's account is now active with the Support role attached.",
+    'welcome.applicationTryout.scenarios.onboard.step7':
+      'Repeat the flow for Maya Patel (email maya.patel@example.com), picking DestinationsAdmin as the role.',
 
-    'welcome.aiAgentsTryout.breadcrumb': 'Tryout Securing AI Agents',
-    'welcome.aiAgentsTryout.overline': 'Securing AI Agents',
+    'welcome.aiAgentsTryout.breadcrumb': 'Tryout Secured AI Agent',
+    'welcome.aiAgentsTryout.overline': 'Secured AI Agent',
     'welcome.aiAgentsTryout.subtitle':
       'Run AI agent use cases against the Wayfinder sample, a travel-booking app with a built-in AI chat assistant.',
     'welcome.aiAgentsTryout.steps.getSample.title': 'Get the Wayfinder Sample',
     'welcome.aiAgentsTryout.steps.getSample.description':
-      'Download the latest Wayfinder sample distribution and extract the archive. It ships with the Wayfinder web frontend, the AI Agent service, and the Wayfinder Server.',
+      'Download the latest Wayfinder sample distribution and extract the archive. It ships with the web frontend, AI agent service, MCP, SMTP mail server and Wayfinder server.',
     'welcome.aiAgentsTryout.steps.importConfigs.title': 'Configure Wayfinder Sample in {{productName}}',
     'welcome.aiAgentsTryout.steps.importConfigs.description':
       'Apply the Wayfinder sample configurations to {{productName}}.',
-    'welcome.aiAgentsTryout.steps.configureSample.title': 'Configure the Sample',
+    'welcome.aiAgentsTryout.steps.configureSample.title': 'Configure the AI Provider Details in Wayfinder Sample',
     'welcome.aiAgentsTryout.steps.configureSample.description':
       'Copy each .env.example to .env in backend/, ai-agent/, and frontend/. Fill in your LLM API key in ai-agent/.env — an Anthropic key from console.anthropic.com or a Gemini key from aistudio.google.com.',
     'welcome.aiAgentsTryout.steps.runSample.title': 'Run the Sample',
     'welcome.aiAgentsTryout.steps.runSample.description':
       'Start all Wayfinder services from the extracted sample directory.',
-    'welcome.aiAgentsTryout.steps.login.title': 'Log In to the App',
+    'welcome.aiAgentsTryout.steps.login.title': 'Sign-In to the App',
     'welcome.aiAgentsTryout.steps.login.description':
       'Open the Wayfinder sample app and sign in with the demo credentials below.',
 
-    'welcome.aiAgentsTryout.scenarios.title': 'Try use cases',
+    'welcome.aiAgentsTryout.apiKeySetup.getKey.title': 'Get an LLM API key',
+    'welcome.aiAgentsTryout.apiKeySetup.getKey.description':
+      'The AI agent needs access to an LLM. Obtain a free API key from one of the providers below.',
+    'welcome.aiAgentsTryout.apiKeySetup.setKey.title': 'Add the key to ai-agent/.env',
+    'welcome.aiAgentsTryout.apiKeySetup.setKey.description':
+      'Open ai-agent/.env and set the key for the provider you chose.',
+
+    'welcome.aiAgentsTryout.scenarios.title': 'Try the following AI agents security patterns',
     'welcome.aiAgentsTryout.scenarios.apiKeyNote':
       'The AI agent requires an LLM API key. Edit ai-agent/.env in the sample directory and set ANTHROPIC_API_KEY or GOOGLE_API_KEY before starting the services.',
     'welcome.aiAgentsTryout.scenarios.tabs.protect': 'Protect the Agent',
@@ -347,42 +360,42 @@ const translations = {
     'welcome.aiAgentsTryout.scenarios.tabs.book': 'Book on Behalf',
 
     'welcome.aiAgentsTryout.scenarios.protect.description':
-      'See scope-based access control in action — John can use the AI concierge, but Jane cannot.',
-    'welcome.aiAgentsTryout.scenarios.protect.step1':
-      'Open <a>http://localhost:5173</a> and sign in as john.doe / john.doe.',
+      'See scope-based access control in action - John can use the AI concierge, but Jane cannot.',
+    'welcome.aiAgentsTryout.scenarios.protect.step1': 'Open <a>http://localhost:5173</a> and sign in as John Doe.',
     'welcome.aiAgentsTryout.scenarios.protect.step2':
-      "Open the chat widget (bottom-right corner) and send any message. The concierge responds — John's token carries the agent:access scope.",
-    'welcome.aiAgentsTryout.scenarios.protect.step3': 'Sign out and sign in as jane.smith / jane.smith.',
+      "Open the chat widget (bottom-right corner) and send any message. The concierge responds — John's token carries the <code>agent:access</code> scope.",
+    'welcome.aiAgentsTryout.scenarios.protect.step3': 'Sign out and sign in as Jane Smith.',
     'welcome.aiAgentsTryout.scenarios.protect.step4':
-      'Open the chat and send a message. The request is rejected with a 403 — Jane does not have the Wayfinder Chat User role.',
-    'welcome.aiAgentsTryout.scenarios.protect.johnLabel': 'John Doe — has agent:access (Wayfinder Chat User role)',
-    'welcome.aiAgentsTryout.scenarios.protect.janeLabel': 'Jane Smith — no agent:access',
+      'Open the chat. Since Jane does not have the Wayfinder Chat User role. Chat agent will not be accessible and the widget will show an error message instead.',
+    'welcome.aiAgentsTryout.scenarios.protect.johnLabel': 'John Have access to chat with Wayfinder chat agent',
+    'welcome.aiAgentsTryout.scenarios.protect.janeLabel': 'Jane does not have access to chat with Wayfinder chat agent',
 
     'welcome.aiAgentsTryout.scenarios.browse.description':
-      'Watch the agent use its own machine-to-machine token to call read-only tools — no user consent popup required.',
+      'Watch the agent use its own Machine-to-Machine (M2M) token to call read-only tools - no user consent popup required.',
     'welcome.aiAgentsTryout.scenarios.browse.step1':
-      'Sign in as john.doe at <a>http://localhost:5173</a> and open the chat widget.',
-    'welcome.aiAgentsTryout.scenarios.browse.step2':
-      'Ask a browsing question, for example: "What flights are there from Colombo to Singapore?"',
+      'Sign in as John at <a>http://localhost:5173</a> and open the chat widget.',
+    'welcome.aiAgentsTryout.scenarios.browse.step2': 'Ask a browsing question in the chat:',
     'welcome.aiAgentsTryout.scenarios.browse.step3':
       'The agent calls the Wayfinder MCP server with its own M2M token (client_credentials grant). No popup appears.',
     'welcome.aiAgentsTryout.scenarios.browse.step4':
-      'You can also try: "Suggest a few flight deals." The agent calls the recommend_bookings tool, which requires the booking:recommend scope — granted to the Wayfinder Concierge via its Recommender role.',
+      'You can also try asking for flight deals — the agent calls the recommend_bookings tool, which requires the <code>booking:recommend</code> scope — granted to the Wayfinder Concierge via its Recommender role.',
+    'welcome.aiAgentsTryout.scenarios.browse.step4Prompt': 'Suggest a few flight deals.',
 
     'welcome.aiAgentsTryout.scenarios.book.description':
-      'Trigger the on-behalf-of consent flow — the agent pauses, asks for your permission, and only proceeds after you approve.',
+      'Trigger the on-behalf-of consent flow - the agent pauses, asks for your permission, and only proceeds after you approve.',
     'welcome.aiAgentsTryout.scenarios.book.step1':
-      'Sign in as john.doe at <a>http://localhost:5173</a> and open the chat widget.',
-    'welcome.aiAgentsTryout.scenarios.book.step2': 'Ask the agent to book something, for example: "Book flight 2".',
+      'Sign in as John at <a>http://localhost:5173</a> and open the chat widget.',
+    'welcome.aiAgentsTryout.scenarios.book.step2': 'Ask the agent to book something, for example:',
+    'welcome.aiAgentsTryout.scenarios.book.step2Prompt': 'Book flight 2',
     'welcome.aiAgentsTryout.scenarios.book.step3':
-      'The agent returns a consent request. A popup opens — sign in as john.doe and select which booking permissions to grant (booking:read, booking:create, booking:cancel).',
+      'The agent returns a consent request. A popup opens - sign in as John and select which booking permissions to grant (<code>booking:read</code>, <code>booking:create</code>, <code>booking:cancel</code>).',
     'welcome.aiAgentsTryout.scenarios.book.step4':
-      'After approval the agent retries the action using a user-context token. The booking succeeds.',
+      "Click Authorize. The agent will retries the action using a user's context token. And you should see the booking confirmation in the chat window shortly after.",
     'welcome.aiAgentsTryout.scenarios.book.step5':
-      'To see the rejection path, repeat the flow but deny booking:create in the consent screen. The agent returns a 403.',
+      'To see the rejection path, repeat the flow but deny <code>booking:create</code> in the consent screen. The agent returns a 403.',
 
-    'welcome.mcpTryout.breadcrumb': 'Tryout Securing MCP',
-    'welcome.mcpTryout.overline': 'Securing MCP',
+    'welcome.mcpTryout.breadcrumb': 'Tryout Secured MCP Server',
+    'welcome.mcpTryout.overline': 'Secured MCP Server',
     'welcome.mcpTryout.subtitle':
       'Connect an external MCP client to the Wayfinder MCP server, signed in through {{productName}}.',
     'welcome.mcpTryout.steps.prerequisite.title': 'Complete AI Agents Setup',
@@ -402,7 +415,7 @@ const translations = {
     'welcome.mcpTryout.steps.allowCors.description':
       "Add Inspector's origin to {{productName}}'s CORS allow-list in repository/conf/deployment.yaml, then restart {{productName}}.",
 
-    'welcome.mcpTryout.scenarios.title': 'Try use cases',
+    'welcome.mcpTryout.scenarios.title': 'Try the following user journeys',
     'welcome.mcpTryout.scenarios.tabs.connect': 'Connect & Sign In',
     'welcome.mcpTryout.scenarios.tabs.permissions': 'Test Permissions',
 
@@ -417,7 +430,7 @@ const translations = {
     'welcome.mcpTryout.scenarios.connect.step4':
       'Click Connect. You are redirected to {{productName}} — sign in as john.doe / john.doe.',
     'welcome.mcpTryout.scenarios.connect.step5':
-      'At the consent screen select the booking permissions to grant (booking:read, booking:create, booking:cancel) and confirm.',
+      'At the consent screen select the booking permissions to grant (<code>booking:read</code>, <code>booking:create</code>, <code>booking:cancel</code>) and confirm.',
     'welcome.mcpTryout.scenarios.connect.connectionLabel': 'Connection details',
     'welcome.mcpTryout.scenarios.connect.fields.transport': 'Transport',
     'welcome.mcpTryout.scenarios.connect.fields.serverUrl': 'Server URL',
@@ -427,9 +440,9 @@ const translations = {
     'welcome.mcpTryout.scenarios.permissions.description':
       'Call MCP tools and observe how {{productName}} enforces the scopes you granted at consent. Reconnect with different permissions to see the difference.',
     'welcome.mcpTryout.scenarios.permissions.step1':
-      'In the Tools tab, call create_booking. Set type=flight, itemId=flight-cmb-sin-01, travelers=1. The call succeeds if you granted booking:create.',
+      'In the Tools tab, call create_booking. Set type=flight, itemId=flight-cmb-sin-01, travelers=1. The call succeeds if you granted <code>booking:create</code>.',
     'welcome.mcpTryout.scenarios.permissions.step2':
-      'Call delete_all_bookings. If booking:cancel was not granted you get: "Insufficient scope for tool delete_all_bookings. Required: booking:cancel".',
+      'Call delete_all_bookings. If <code>booking:cancel</code> was not granted you get: "Insufficient scope for tool delete_all_bookings. Required: <code>booking:cancel</code>".',
     'welcome.mcpTryout.scenarios.permissions.step3':
       'To narrow or expand permissions, disconnect from Inspector and reconnect.',
     'welcome.mcpTryout.scenarios.permissions.step4':
@@ -616,6 +629,8 @@ const translations = {
     'categories.resources': 'Resources',
     'categories.configure': 'Configure',
     'categories.customize': 'Customize',
+    'pages.importConfiguration': 'Import Configuration',
+    'pages.openProject': 'Import Configuration',
     'pages.home': 'Home',
     'pages.users': 'Users',
     'pages.userTypes': 'User Types',
@@ -625,6 +640,7 @@ const translations = {
     'pages.roles': 'Roles',
     'pages.integrations': 'Integrations',
     'pages.applications': 'Applications',
+    'pages.apis': 'APIs',
     'pages.dashboard': 'Dashboard',
     'pages.flows': 'Flows',
     'pages.design': 'Design',
@@ -1670,7 +1686,6 @@ const translations = {
     'onboarding.configure.stack.category.web': 'Web',
     'onboarding.configure.stack.category.backend': 'Backend',
     'onboarding.configure.stack.category.mobile': 'Mobile',
-    'onboarding.configure.stack.category.ai': 'AI',
     'onboarding.configure.stack.technology.title': 'Technology',
     'onboarding.configure.stack.technology.subtitle': 'What technology are you using to build your application?',
     'onboarding.configure.stack.technology.express.title': 'Express',
@@ -1695,8 +1710,6 @@ const translations = {
     'onboarding.configure.stack.technology.nuxt.description': 'Full-stack Vue framework with server-side rendering',
     'onboarding.configure.stack.technology.vanillaJs.title': 'JavaScript',
     'onboarding.configure.stack.technology.vanillaJs.description': 'Browser application built with vanilla JavaScript',
-    'onboarding.configure.stack.technology.mcpClient.title': 'MCP Client',
-    'onboarding.configure.stack.technology.mcpClient.description': 'AI model client using the Model Context Protocol',
     'onboarding.configure.stack.platform.title': 'Application Type',
     'onboarding.configure.stack.platform.subtitle': 'This helps us configure the right settings for your app',
     'onboarding.configure.stack.dividerLabel': 'OR',
@@ -1708,6 +1721,9 @@ const translations = {
     'onboarding.configure.stack.platform.mobile.description': 'Native or hybrid mobile applications',
     'onboarding.configure.stack.platform.backend.title': 'Backend Service',
     'onboarding.configure.stack.platform.backend.description': 'Server-to-server APIs and services',
+    'onboarding.configure.stack.platform.custom.title': 'Custom',
+    'onboarding.configure.stack.platform.custom.description':
+      'Fully customizable application with all configuration options available',
     'onboarding.configure.details.title': 'Configuration',
     'onboarding.configure.details.description': 'Configure where your application is hosted and callback settings',
     'onboarding.configure.details.hostingUrl.label': 'Where is your application hosted?',
@@ -2168,9 +2184,9 @@ const translations = {
     'export.page.loading': 'Loading export configuration...',
     'export.page.loadError': 'Failed to load export configuration: {{message}}',
 
-    'upload.breadcrumb.openProject': 'Open Project',
-    'upload.title': 'Open Project',
-    'upload.subtitle': 'Upload your {{configFileName}} configuration file or provide a URL to import',
+    'upload.breadcrumb.openProject': 'Import Configuration',
+    'upload.title': 'Import Configuration',
+    'upload.subtitle': 'Upload your {{configFileName}} configuration file to import',
     'upload.tabs.uploadFile': 'Upload File',
     'upload.tabs.fromUrl': 'From URL',
     'upload.actions.changeFile': 'Change File',
@@ -2620,9 +2636,9 @@ const translations = {
     'core.executions.provisioning.maxPerPrompt.hint':
       'Number of dynamic inputs to show per prompt when connected to this provisioning executor.',
     'core.executions.provisioning.assignGroup.label': 'Assign Group',
-    'core.executions.provisioning.assignGroup.placeholder': 'Group ID to assign',
+    'core.executions.provisioning.assignGroup.placeholder': 'Comma-separated group IDs to assign',
     'core.executions.provisioning.assignRole.label': 'Assign Role',
-    'core.executions.provisioning.assignRole.placeholder': 'Role ID to assign',
+    'core.executions.provisioning.assignRole.placeholder': 'Comma-separated role IDs to assign',
     'core.placeholders.dynamicInputPlaceholder.title': 'Dynamic Input',
     'core.placeholders.dynamicInputPlaceholder.hint': 'Resolves input fields passed from runtime.',
 
@@ -3372,12 +3388,147 @@ const translations = {
     import: 'Attach',
     runInProduction: 'Run {{productName}} in Production',
     runtimeComponentsOnly: '(with required runtime components only)',
-    designConfigure: 'Design / Configure {{productName}} Project',
+    designConfigure: 'Configure {{productName}}',
     designComponents: '(with design components)',
     commandProduction: './start.sh project-foo.yml --env production.env',
     commandStart: './start.sh',
     adminApp: 'Admin App',
     loginApp: 'Login App',
+  },
+  resourceServers: {
+    'listing.title': 'Resource Servers',
+    'listing.subtitle': 'Define resource servers and their resources to manage access control.',
+    'listing.addResourceServer': 'Add resource server',
+    'listing.columns.name': 'Name',
+    'listing.columns.type': 'Type',
+    'listing.columns.identifier': 'Identifier',
+    'listing.columns.handle': 'Handle',
+    'listing.columns.actions': 'Actions',
+    'listing.systemResourceServer': 'System resource server',
+    'listing.error': 'Failed to load resource servers.',
+    'delete.title': 'Delete resource server',
+    'delete.message': 'Are you sure you want to delete this resource server? This action cannot be undone.',
+    'delete.disclaimer':
+      'Warning: All associated resources, actions, and permission strings will be permanently removed.',
+    'create.steps.type': 'Type',
+    'create.steps.name': 'Name',
+    'create.steps.separator': 'Permission Delimiter',
+    'create.steps.organizationUnit': 'Organization',
+    'create.type.title': 'What type of resource server are you adding?',
+    'create.type.subtitle': 'Select the type that best describes this resource server.',
+    'create.type.api.title': 'API',
+    'create.type.api.description': 'REST or HTTP APIs secured as an OAuth2 audience.',
+    'create.type.mcp.title': 'MCP',
+    'create.type.mcp.description': 'Model Context Protocol servers.',
+    'create.type.custom.title': 'Custom',
+    'create.type.custom.description': 'Any other protected resource — database, file store, or service.',
+    'create.form.name.label': 'Name',
+    'create.form.name.placeholder': 'Enter resource server name',
+    'create.form.name.required': 'Name is required.',
+    'create.form.identifier.label': 'Identifier',
+    'create.form.identifier.placeholder': 'https://api.example.com',
+    'create.form.identifier.required': 'Identifier is required.',
+    'create.form.identifier.hint': 'A unique URI that identifies this resource server.',
+    'create.form.handle.label': 'Handle',
+    'create.form.handle.placeholder': 'my-resource-server',
+    'create.form.handle.hint': 'A short identifier for this resource server.',
+    'edit.settings.general.title': 'General',
+    'edit.settings.general.name.label': 'Name',
+    'edit.settings.general.identifier.label': 'Identifier',
+    'edit.settings.general.handle.label': 'Handle',
+    'edit.settings.general.description.label': 'Description',
+    'edit.settings.general.description.placeholder': 'Enter a description',
+    'edit.settings.general.organizationUnit.label': 'Organization Unit',
+    'edit.settings.save': 'Save Changes',
+    'edit.settings.saved': 'Settings saved successfully.',
+    'edit.settings.error': 'Failed to save settings.',
+    'edit.resources.title': 'Resources & Actions',
+    'edit.resources.subtitle': 'Define the resources and actions for this resource server.',
+    'edit.resources.addResource': 'Add Resource',
+    'edit.resources.addAction': 'Add Action',
+    'edit.resources.noResources': 'No resources defined yet.',
+    'edit.resources.deleteResource.title': 'Delete Resource',
+    'edit.resources.deleteResource.message': 'Are you sure? All actions under this resource will also be removed.',
+    'edit.resources.deleteAction.title': 'Delete Action',
+    'edit.resources.deleteAction.message': 'Are you sure you want to delete this action?',
+    'edit.resources.form.name.label': 'Name',
+    'edit.resources.form.name.placeholder': 'Enter resource name',
+    'edit.resources.form.name.required': 'Name is required.',
+    'edit.resources.form.handle.label': 'Handle',
+    'edit.resources.form.handle.placeholder': 'resource-handle',
+    'edit.resources.form.description.label': 'Description',
+    'edit.resources.form.description.placeholder': 'Enter description',
+    'edit.resources.detail.title': 'Resource Details',
+    'edit.resources.detail.name': 'Name',
+    'edit.resources.detail.handle': 'Handle',
+    'edit.resources.detail.description': 'Description',
+    'edit.resources.detail.actions': 'Actions',
+    'edit.resources.detail.noActions': 'No actions defined.',
+    'common.save': 'Save',
+    'common.cancel': 'Cancel',
+    'common.delete': 'Delete',
+    'common.create': 'Create',
+    'common.edit': 'Edit',
+    'common.loading': 'Loading...',
+    'common.error': 'An error occurred.',
+    'common.confirm': 'Confirm',
+    'common.back': 'Back',
+    'common.next': 'Next',
+    'create.name.title': 'Name your resource server',
+    'create.name.nameLabel': 'Resource Server Name',
+    'create.name.namePlaceholder': 'e.g. Payments API',
+    'create.name.suggestions': 'Need inspiration? Pick one:',
+    'create.name.handleLabel': 'Handle',
+    'create.name.handlePlaceholder': 'e.g. payments-api',
+    'create.name.handleHint':
+      'The handle prefixes every permission in this resource server. It cannot be changed after creation.',
+    'create.separator.title': 'Choose your permission delimiter',
+    'create.separator.subtitle':
+      'The delimiter character joins parts of a permission string. This cannot be changed after creation.',
+    'create.separator.label': 'Permission Delimiter',
+    'create.separator.hint': 'Choose the character that separates parts of a permission string.',
+    'create.separator.invalid': 'Select a valid delimiter: . _ : - /',
+    'create.separator.previewLabel': 'Example permission',
+    'create.separator.colon': 'Colon ( : )',
+    'create.separator.dot': 'Dot ( . )',
+    'create.separator.slash': 'Slash ( / )',
+    'create.separator.hyphen': 'Hyphen ( - )',
+    'create.separator.underscore': 'Underscore ( _ )',
+    'create.success': 'Resource server created successfully.',
+    'create.creating': 'Creating…',
+    'create.submit': 'Create resource server',
+    'edit.tab.resources': 'Resources',
+    'edit.tab.advanced': 'Advanced Settings',
+    'edit.back': 'Back to resource servers',
+    'edit.notFound': 'Resource server not found.',
+    'edit.systemResourceServer': 'System',
+    'edit.tabs': 'Resource server settings',
+    'edit.noDescription': 'No description',
+    'edit.descriptionPlaceholder': 'Add a description',
+    'edit.saveError': 'Failed to save changes.',
+    'edit.unsavedChanges': 'You have unsaved changes.',
+    'edit.advanced.identifier.title': 'Configurations',
+    'edit.advanced.identifier.description': 'Configuration settings for this resource server.',
+    'edit.advanced.identifier.label': 'Identifier (Audience)',
+    'edit.advanced.identifier.hint':
+      'A unique value that identifies this resource server. When set as an URI,enables RFC 8707 resource indicator support in OAuth2 authorization requests.',
+    'edit.advanced.identifier.saved': 'Identifier saved.',
+    'edit.advanced.identifier.saveError': 'Failed to save identifier.',
+    'edit.dangerZone.title': 'Danger Zone',
+    'edit.dangerZone.description': 'Irreversible actions for this resource server.',
+    'edit.dangerZone.deleteServer': 'Delete resource server',
+    'tree.title': 'Resource Hierarchy',
+    'tree.add': 'Add',
+    'tree.addResource': 'Add resource',
+    'tree.addServerAction': 'Add server-level action',
+    'tree.empty': 'No resources yet — add a resource or action to get started.',
+    'tree.addSubResource': 'Add sub-resource',
+    'tree.addAction': 'Add action',
+    'tree.deleteResource.success': 'Resource deleted.',
+    'tree.deleteResource.error': 'Cannot delete — remove child resources and actions first.',
+    'tree.deleteAction.success': 'Action deleted.',
+    'tree.deleteAction.error': 'Failed to delete action.',
+    'tree.copyPermission': 'Copy permission string',
   },
 } as const;
 

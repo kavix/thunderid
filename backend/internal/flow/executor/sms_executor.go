@@ -23,6 +23,7 @@ import (
 	"fmt"
 	"regexp"
 
+	"github.com/thunder-id/thunderid/internal/entityprovider"
 	"github.com/thunder-id/thunderid/internal/flow/common"
 	"github.com/thunder-id/thunderid/internal/flow/core"
 	"github.com/thunder-id/thunderid/internal/notification"
@@ -42,12 +43,14 @@ type smsExecutor struct {
 	logger          *log.Logger
 	notifSenderSvc  notification.NotificationSenderServiceInterface
 	templateService template.TemplateServiceInterface
+	entityProvider  entityprovider.EntityProviderInterface
 }
 
 // newSMSExecutor creates a new instance of smsExecutor.
 func newSMSExecutor(flowFactory core.FlowFactoryInterface,
 	notifSenderSvc notification.NotificationSenderServiceInterface,
-	templateService template.TemplateServiceInterface) *smsExecutor {
+	templateService template.TemplateServiceInterface,
+	entityProvider entityprovider.EntityProviderInterface) *smsExecutor {
 	logger := log.GetLogger().With(log.String(log.LoggerKeyComponentName, "SMSExecutor"))
 	base := flowFactory.CreateExecutor(
 		ExecutorNameSMSExecutor,
@@ -62,6 +65,7 @@ func newSMSExecutor(flowFactory core.FlowFactoryInterface,
 		logger:            logger,
 		notifSenderSvc:    notifSenderSvc,
 		templateService:   templateService,
+		entityProvider:    entityProvider,
 	}
 }
 
@@ -69,7 +73,7 @@ func newSMSExecutor(flowFactory core.FlowFactoryInterface,
 // then renders the SMS body from a template and sends it.
 func (e *smsExecutor) Execute(ctx *core.NodeContext) (*common.ExecutorResponse, error) {
 	logger := e.logger.With(log.String(log.LoggerKeyExecutionID, ctx.ExecutionID))
-	logger.DebugWithContext(ctx.Context, "Executing SMS executor")
+	logger.Debug(ctx.Context, "Executing SMS executor")
 
 	execResp := &common.ExecutorResponse{
 		AdditionalData: make(map[string]string),
@@ -82,16 +86,16 @@ func (e *smsExecutor) Execute(ctx *core.NodeContext) (*common.ExecutorResponse, 
 
 	phoneAttr := resolveInputIdentifierByType(ctx, common.InputTypePhone, common.AttributeMobileNumber)
 
-	recipient := resolveRecipientMobile(ctx, phoneAttr)
+	recipient := resolveRecipientMobile(ctx, phoneAttr, e.entityProvider)
 	if recipient == "" {
-		logger.DebugWithContext(ctx.Context, "SMS recipient not found in user inputs or runtime data")
+		logger.Debug(ctx.Context, "SMS recipient not found in user inputs or runtime data")
 		execResp.Status = common.ExecFailure
 		execResp.Error = &ErrSMSRecipientMissing
 		return execResp, nil
 	}
 
 	if !isValidPhoneNumber(recipient) {
-		logger.DebugWithContext(ctx.Context, "SMS recipient is not a valid phone number",
+		logger.Debug(ctx.Context, "SMS recipient is not a valid phone number",
 			log.String("phoneAttr", phoneAttr))
 		execResp.Status = common.ExecFailure
 		execResp.Error = &ErrSMSInvalidPhone
@@ -122,8 +126,9 @@ func (e *smsExecutor) Execute(ctx *core.NodeContext) (*common.ExecutorResponse, 
 	scenario := template.ScenarioType(tmplStr)
 
 	templateData := template.TemplateData{
-		"appName":    ctx.Application.Name,
-		"inviteLink": ctx.RuntimeData[common.RuntimeKeyInviteLink],
+		"appName":        ctx.Application.Name,
+		"inviteLink":     ctx.RuntimeData[common.RuntimeKeyInviteLink],
+		"bindingMessage": ctx.RuntimeData[common.RuntimeKeyBindingMessage],
 	}
 
 	rendered, svcErr := e.templateService.Render(ctx.Context, scenario, template.TemplateTypeSMS, templateData)
@@ -142,21 +147,29 @@ func (e *smsExecutor) Execute(ctx *core.NodeContext) (*common.ExecutorResponse, 
 		return nil, fmt.Errorf("SMS send failed: %s", notifSvcErr.ErrorDescription)
 	}
 
-	logger.DebugWithContext(ctx.Context, "SMS sent successfully", log.MaskedString("recipient", recipient))
+	logger.Debug(ctx.Context, "SMS sent successfully", log.MaskedString("recipient", recipient))
 
 	execResp.AdditionalData[common.DataSMSSent] = dataValueTrue
 	execResp.Status = common.ExecComplete
 	return execResp, nil
 }
 
-// resolveRecipientMobile retrieves the recipient mobile number from user inputs or runtime data
-// using the given attribute name as the lookup key.
-func resolveRecipientMobile(ctx *core.NodeContext, phoneAttr string) string {
+// resolveRecipientMobile retrieves the recipient mobile number from user inputs, runtime data,
+// or the entity provider (via RuntimeData["userID"]), in that order.
+func resolveRecipientMobile(ctx *core.NodeContext, phoneAttr string, ep entityprovider.EntityProviderInterface) string {
 	if mobile, ok := ctx.UserInputs[phoneAttr]; ok && mobile != "" {
 		return mobile
 	}
 	if mobile, ok := ctx.RuntimeData[phoneAttr]; ok && mobile != "" {
 		return mobile
+	}
+	if userID, ok := ctx.RuntimeData[userAttributeUserID]; ok && userID != "" && ep != nil {
+		user, err := ep.GetEntity(userID)
+		if err == nil {
+			if mobile, attrErr := GetUserAttribute(user, phoneAttr); attrErr == nil {
+				return mobile
+			}
+		}
 	}
 	return ""
 }

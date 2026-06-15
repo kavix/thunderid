@@ -89,15 +89,6 @@ func (h *authorizationCodeGrantHandler) ValidateGrant(ctx context.Context, token
 		}
 	}
 
-	// TODO: Redirect uri is not mandatory when excluded in the authorize request and is valid scenario.
-	//  This should be removed when supporting other means of authorization.
-	if tokenRequest.RedirectURI == "" {
-		return &model.ErrorResponse{
-			Error:            constants.ErrorInvalidRequest,
-			ErrorDescription: "Redirect URI is required",
-		}
-	}
-
 	if errResp := resourceindicators.ValidateResourceURIs(tokenRequest.Resources); errResp != nil {
 		return errResp
 	}
@@ -129,7 +120,7 @@ func (h *authorizationCodeGrantHandler) HandleGrant(ctx context.Context, tokenRe
 	if authCode.AttributeCacheID != "" {
 		userAttributes, err := h.attributeCache.GetAttributeCache(ctx, authCode.AttributeCacheID)
 		if err != nil {
-			logger.ErrorWithContext(ctx,
+			logger.Error(ctx,
 				"Failed to get user attributes from attribute cache. "+err.ErrorDescription.DefaultValue)
 			return nil, &model.ErrorResponse{
 				Error:            constants.ErrorServerError,
@@ -237,7 +228,7 @@ func (h *authorizationCodeGrantHandler) HandleGrant(ctx context.Context, tokenRe
 			CompletedACR:   authCode.CompletedACR,
 		})
 		if err != nil {
-			logger.ErrorWithContext(ctx, "Failed to generate ID token", log.Error(err))
+			logger.Error(ctx, "Failed to generate ID token", log.Error(err))
 			return nil, &model.ErrorResponse{
 				Error:            constants.ErrorServerError,
 				ErrorDescription: "Failed to generate token",
@@ -281,7 +272,7 @@ func (h *authorizationCodeGrantHandler) retrieveAndValidateAuthCode(
 		// Validate PKCE
 		if err := pkce.ValidatePKCE(authCode.CodeChallenge, authCode.CodeChallengeMethod,
 			tokenRequest.CodeVerifier); err != nil {
-			logger.DebugWithContext(ctx, "PKCE validation failed", log.Error(err))
+			logger.Debug(ctx, "PKCE validation failed", log.Error(err))
 			return nil, &model.ErrorResponse{
 				Error:            constants.ErrorInvalidGrant,
 				ErrorDescription: "Invalid code verifier",
@@ -301,8 +292,8 @@ func validateAuthorizationCode(tokenRequest *model.TokenRequest,
 		}
 	}
 
-	// redirect_uri is not mandatory in certain scenarios. Should match if provided with the authorization.
-	if code.RedirectURI != "" && tokenRequest.RedirectURI != code.RedirectURI {
+	// RFC 6749 §4.1.3: required only if included in the authorize request.
+	if code.RedirectURIProvided && tokenRequest.RedirectURI != code.RedirectURI {
 		return &model.ErrorResponse{
 			Error:            constants.ErrorInvalidGrant,
 			ErrorDescription: "Invalid redirect URI",
