@@ -43,13 +43,21 @@ Use this guide to add <ProductName /> authentication to a Vue 3 application usin
 
 ## Run <ProductName />
 
-Start a local ThunderID instance. Pick the method that works best for you:
+Start a local <ProductName /> instance. Pick the method that works best for you:
 
 <RunThunderID />
 
-Once it's running, the console is available at [https://localhost:8090](https://localhost:8090).
+Once it's running, the console is available at [https://localhost:8090/console](https://localhost:8090/console).
 
 ## Create an Application
+
+:::info Test User
+If you used the default setup, sign in to the Console with the default admin credentials:
+
+**Username:** `admin`
+
+**Password:** `admin`
+:::
 
 Open the Console at <ConsoleUrl />, navigate to **Applications**, and click **Add Application**:
 
@@ -57,6 +65,10 @@ Open the Console at <ConsoleUrl />, navigate to **Applications**, and click **Ad
 2. Enter a name (e.g. `My Vue App`) and create an application. The rest of the settings can stay at their defaults.
 3. Copy the **Client ID** from the **General** tab. You'll need it when configuring the SDK.
 4. Under **General**, add `http://localhost:5173` to the list of **Authorized Redirect URIs**.
+
+:::warning Configure CORS
+The Vue SDK calls the <ProductName /> API directly from the browser, so you need to allow your app's origin. In the Console, go to **Settings**, and under the **System** section, open the **CORS** tab. Enter `http://localhost:5173` (or the relevant URL for your setup) and click **Add Origin**.
+:::
 
 ## Create a Vue App
 
@@ -191,7 +203,7 @@ You should see the `<SignInButton />`. Click it to be redirected to the <Product
   <a href="../../../guides/flows/what-are-flows" style={{textDecoration: 'none', color: 'inherit'}}>
     <div style={{border: '1px solid var(--ifm-color-emphasis-300)', borderRadius: '10px', padding: '1.25rem', cursor: 'pointer'}}>
       <div style={{fontSize: '1rem', fontWeight: '700', marginBottom: '0.4rem'}}>Upgrade the Sign-In Flow</div>
-      <div style={{fontSize: '0.875rem', color: 'var(--ifm-color-emphasis-700)', marginBottom: '0.75rem'}}>Add MFA, passkeys, or social login to your flow — no app code changes required.</div>
+      <div style={{fontSize: '0.875rem', color: 'var(--ifm-color-emphasis-700)', marginBottom: '0.75rem'}}>Add MFA, passkeys, or social login to your flow, no app code changes required.</div>
       <div style={{fontSize: '0.875rem', color: 'var(--ifm-color-primary)', fontWeight: 600}}>Flow Designer →</div>
     </div>
   </a>

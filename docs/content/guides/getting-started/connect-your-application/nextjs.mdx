@@ -43,13 +43,21 @@ Use this guide to add <ProductName /> authentication to a Next.js application us
 
 ## Run <ProductName />
 
-Start a local ThunderID instance. Pick the method that works best for you:
+Start a local <ProductName /> instance. Pick the method that works best for you:
 
 <RunThunderID />
 
-Once it's running, the console is available at [https://localhost:8090](https://localhost:8090).
+Once it's running, the console is available at [https://localhost:8090/console](https://localhost:8090/console).
 
 ## Create an Application
+
+:::info Test User
+If you used the default setup, sign in to the Console with the default admin credentials:
+
+**Username:** `admin`
+
+**Password:** `admin`
+:::
 
 Open the Console at <ConsoleUrl />, navigate to **Applications**, and click **Add Application**:
 
@@ -127,7 +135,7 @@ NODE_TLS_REJECT_UNAUTHORIZED=0
 Wrap your root layout with `ThunderIDProvider` from the server export. This enables authentication across your entire app.
 
 :::info
-`ThunderIDProvider` handles the OAuth callback automatically — no manual callback route is needed. Make sure the authorized redirect URL in your <ProductName /> application settings is set to `http://localhost:3000`.
+`ThunderIDProvider` handles the OAuth callback automatically, so no manual callback route is needed. Make sure the authorized redirect URL in your <ProductName /> application settings is set to `http://localhost:3000`.
 :::
 
 ```tsx title="app/layout.tsx" {3,32} showLineNumbers

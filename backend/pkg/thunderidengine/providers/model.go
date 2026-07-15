@@ -192,8 +192,7 @@ type ResourceServer struct {
 	ID          string             `yaml:"id"                    json:"-"`
 	Name        string             `yaml:"name"                  json:"name"`
 	Description string             `yaml:"description,omitempty" json:"description,omitempty"`
-	Handle      string             `yaml:"handle"                json:"handle"`
-	Identifier  string             `yaml:"identifier,omitempty"  json:"identifier,omitempty"`
+	Identifier  string             `yaml:"identifier"            json:"identifier"`
 	Type        ResourceServerType `yaml:"type,omitempty"        json:"type,omitempty"`
 	OUID        string             `yaml:"ouId,omitempty"        json:"ouId"`
 	OUHandle    string             `yaml:"ouHandle,omitempty"    json:"-"`
@@ -861,6 +860,27 @@ type Consent struct {
 	UpdatedTime int64
 }
 
+// ExecutorSupportedProperties describes the properties that an executor supports, including whether each property is required.
+type ExecutorSupportedProperties struct {
+	// Property is the name of the property that the executor supports.
+	Property string `json:"property"`
+	// IsRequired indicates whether the property is required for the executor to function correctly.
+	IsRequired bool `json:"isRequired"`
+}
+
+// ExecutorMeta describes the static capabilities of an executor.
+type ExecutorMeta struct {
+	// DefaultMode is used when the node does not specify a mode.
+	// If empty and SupportedModes is non-empty, mode is required in the node definition.
+	DefaultMode string `json:"defaultMode"`
+	// SupportedModes lists valid executor modes. Empty means all modes are permitted.
+	SupportedModes []string `json:"supportedModes"`
+	// SupportedFlowTypes lists flow types this executor may be used in. Empty means all.
+	SupportedFlowTypes []FlowType `json:"supportedFlowTypes"`
+	// SupportedProperties lists NodeDefinition.Properties keys that must be non-empty.
+	SupportedProperties []ExecutorSupportedProperties `json:"supportedProperties"`
+}
+
 // ExecutorResponse represents the response from an executor
 type ExecutorResponse struct {
 	Status         ExecutorStatus         `json:"status"`
@@ -1088,7 +1108,7 @@ type Subject struct {
 
 // AccessEvaluationResourceServer identifies the resource server for an access evaluation.
 type AccessEvaluationResourceServer struct {
-	Handle     string                 `json:"handle"`
+	ID         string                 `json:"id,omitempty"`
 	Properties map[string]interface{} `json:"properties,omitempty"`
 }
 
