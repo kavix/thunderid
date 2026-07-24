@@ -92,6 +92,11 @@ func (s *otpService) GenerateOTP(ctx context.Context, recipient, recipientAttr, 
 		if svcErr != nil {
 			return "", "", 0, svcErr
 		}
+		// Validate token binding to current request
+		if prevData.Recipient != recipient || prevData.RecipientAttr != recipientAttr {
+			logger.Debug(ctx, "Previous session token does not match current recipient or attribute")
+			return "", "", 0, &ErrorInvalidSessionToken
+		}
 		attemptCount = prevData.AttemptCount + 1
 	}
 

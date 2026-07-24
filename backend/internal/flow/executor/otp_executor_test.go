@@ -294,7 +294,7 @@ func (suite *OTPExecutorTestSuite) TestExecuteGenerate_MaxAttemptsReached_Return
 	userID := testOTPUserID
 	suite.mockEntityProvider.On("IdentifyEntity", mock.Anything).Return(&userID, nil)
 
-	suite.mockOTPService.On("GenerateOTP", mock.Anything, userID, authnprovidercm.UserAttributeUserID, mock.Anything).
+	suite.mockOTPService.On("GenerateOTP", mock.Anything, userID, authnprovidercm.UserAttributeUserID, "prev-session-tok").
 		Return("", "", int64(0), &otp.ErrorMaxOTPAttemptsExceeded)
 
 	ctx := &providers.NodeContext{
