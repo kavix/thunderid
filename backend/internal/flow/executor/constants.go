@@ -114,7 +114,6 @@ const (
 	propertyKeyPresentationDefinitionID                = "presentation_definition_id"
 	propertyKeyCallbackType                            = "callbackType"
 	propertyKeyLoginHintAttribute                      = "loginHintAttribute"
-	propertyKeyMaxOTPAttempts                          = "maxAttempts"
 )
 
 // nonSearchableInputs contains the list of user inputs/ attributes that are non-searchable.
