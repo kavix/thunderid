@@ -36,3 +36,5 @@ use-cases/b2c/configure-it-yourself
 use-cases/b2c/customer-identity
 use-cases/b2c/overview
 use-cases/b2c/solution-patterns
+# docs/oxlint-evaluation.md is intentionally not registered in a sidebar
+oxlint-evaluation
